@@ -176,7 +176,7 @@ export default function AnimatedFooter() {
           <div className="md:col-span-5 flex flex-col items-start">
             <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="block">
               <img 
-                src="/temaoscuro/logo-horizontal-oscuro.png" 
+                src="/temaoscuro/logo_horizontal-removebg-preview.png" 
                 alt="MundoGraff" 
                 className="h-10 w-auto mb-6 object-contain hover:opacity-90 transition-opacity" 
               />
@@ -274,9 +274,13 @@ export default function AnimatedFooter() {
           <p className="text-xs text-neutral-500 font-sans">
             © 2026 MundoGraff. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-neutral-500 font-sans">
-            Hecho por Antigravity
-          </p>
+          <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="hover:opacity-90 transition-opacity">
+            <img
+              src="/temaoscuro/logo_horizontal-removebg-preview.png"
+              alt="MundoGraff"
+              className="h-8 md:h-10 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity"
+            />
+          </a>
         </div>
       </div>
     </footer>

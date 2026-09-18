@@ -68,14 +68,14 @@ export function LocationMap({
       onClick={handleClick}
     >
       <motion.div
-        className="relative overflow-hidden rounded-2xl bg-[#0A1124] border border-white/10"
+        className="relative overflow-hidden rounded-2xl bg-[#0A1124] border border-white/10 w-full mx-auto max-w-[380px]"
         style={{
           rotateX: springRotateX,
           rotateY: springRotateY,
           transformStyle: "preserve-3d",
         }}
         animate={{
-          width: isExpanded ? 380 : 260,
+          maxWidth: isExpanded ? 380 : 260,
           height: isExpanded ? 320 : 150,
         }}
         transition={{

@@ -215,23 +215,39 @@ export default function AnimatedFooter() {
           {/* Columnas Derechas: Enlaces (Ocupa 7 espacios) */}
           <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6">
             
-            {/* Columna 1: SERVICIOS */}
+            {/* Columna 1: NAVEGACIÓN */}
             <div>
               <h3 className="text-xs font-heading tracking-widest text-neutral-500 uppercase mb-6">
-                Servicios
+                Navegación
               </h3>
               <ul className="flex flex-col gap-4">
-                {[
-                  { label: "Inicio", href: "/#inicio" },
-                  { label: "Cartelería e Impresiones", href: "/#servicios" },
-                  { label: "Sobre Nosotros", href: "/#nosotros" },
-                ].map((item) => (
-                  <li key={item.label}>
-                    <a href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
+                <li>
+                  <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="flex items-center gap-3 text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70 group-hover:opacity-100 transition-opacity">
+                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                      <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Inicio
+                  </a>
+                </li>
+                <li>
+                  <a href="/#servicios" onClick={(e) => handleNavClick(e, '/#servicios')} className="flex items-center gap-3 text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70 group-hover:opacity-100 transition-opacity">
+                      <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                      <line x1="3" x2="21" y1="9" y2="9"/>
+                      <line x1="9" x2="9" y1="21" y2="9"/>
+                    </svg>
+                    Servicios
+                  </a>
+                </li>
+                <li>
+                  <a href="/#trayectoria" onClick={(e) => handleNavClick(e, '/#trayectoria')} className="flex items-center gap-3 text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70 group-hover:opacity-100 transition-opacity">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                    </svg>
+                    Trayectoria
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -263,7 +279,7 @@ export default function AnimatedFooter() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70 group-hover:opacity-100 transition-opacity">
                       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
                     </svg>
-                    Facebook
+                    MundoGraff
                   </a>
                 </li>
                 <li>
@@ -273,7 +289,7 @@ export default function AnimatedFooter() {
                       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                       <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
                     </svg>
-                    Instagram
+                    @mundograff_impresiones
                   </a>
                 </li>
               </ul>

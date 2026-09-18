@@ -33,8 +33,8 @@ export default function UbicacionSection() {
         </div>
 
         {/* Columna Derecha: Mapa Interactivo */}
-        <div className="flex-shrink-0">
-          <LocationMap />
+        <div className="flex-shrink-0 w-full md:w-auto flex justify-center md:justify-end">
+          <LocationMap className="w-full" />
         </div>
 
       </div>

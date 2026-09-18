@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react"
 import * as THREE from "three"
 
-export default function WebGLShader({ className = "absolute inset-0 w-full h-full block -z-10 pointer-events-none" }: { className?: string }) {
+export default function WebGLShader({ className = "absolute inset-0 w-full h-full block -z-10 pointer-events-none", style }: { className?: string, style?: React.CSSProperties }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -27,65 +27,72 @@ export default function WebGLShader({ className = "absolute inset-0 w-full h-ful
       uniform vec2 resolution;
       uniform float time;
 
-      // REGLA 1: DENSIDAD DE HACES (Rieles/Lluvia digital)
-      // Genera un haz vertical que cae (con una variación micro-onda horizontal)
-      float calculateRain(vec2 p, float xPos, float width, float yFreq, float speed, float phase, float t) {
-          // Micro ondulación en el eje X para darle organicidad sin perder la rectitud
-          float waveX = xPos + sin(p.y * 1.5 + phase) * 0.015;
-          float dist = abs(p.x - waveX);
+      // REGLA 1: HACES ESTILO "PILL" (Sólidos, rectilíneos y nítidos)
+      float calculatePill(vec2 p, float xPos, float width, float yFreq, float speed, float phase, float pillLength, float t) {
+          float dist = abs(p.x - xPos);
           
-          // Glow difuso lateral
-          float hGlow = pow(width / (dist + width), 1.6);
+          // REGLA 3: CAÍDA MÁS RÁPIDA
+          // yPattern va de 0 a 1 y repite.
+          float yPattern = fract(p.y * yFreq + t * speed + phase);
           
-          // REGLA 3: CAÍDA (sumamos 't * speed' al eje Y para que caiga)
-          float vPattern = sin(p.y * yFreq + t * speed + phase);
-          // Agudizar los picos de luz (focos luminosos cayendo)
-          vPattern = pow(vPattern * 0.5 + 0.5, 3.0);
+          // Crear forma de píldora: sólido en el centro, difuminado suave en las puntas para redondear
+          float vPattern = smoothstep(0.0, 0.05, yPattern) * smoothstep(pillLength, pillLength - 0.05, yPattern);
           
-          return hGlow * vPattern;
+          // Núcleo súper nítido y sólido
+          float core = smoothstep(width, width * 0.7, dist) * vPattern;
+          
+          // Glow muy sutil para que no ensucie, preservando el aspecto rígido
+          float glow = exp(-dist * 120.0) * vPattern * 0.4;
+          
+          return core + glow;
       }
 
       void main() {
-        // Coordenadas normalizadas, ajustadas a la relación de aspecto del contenedor
         vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / max(resolution.x, resolution.y);
 
-        // REGLA 2: PALETA DE COLORES (Mayoría Fría, Acentos Cálidos)
         vec3 teal        = vec3(0.000, 0.557, 0.478); // #008E7A
-        vec3 ultramarine = vec3(0.165, 0.294, 0.612); // #2A4B9C (Versión brillante)
+        vec3 ultramarine = vec3(0.165, 0.294, 0.612); // #2A4B9C
         vec3 violet      = vec3(0.478, 0.133, 0.357); // #7A225B
         vec3 crimson     = vec3(0.620, 0.000, 0.169); // #9E002B
         vec3 orange      = vec3(1.000, 0.353, 0.000); // #FF5A00
+        vec3 amber       = vec3(1.000, 0.635, 0.000); // #FFA200 (Extra para variedad)
 
-        // REGLA 3: VELOCIDAD MEDIA-LENTA
-        float t = time * 0.25;
+        // VELOCIDAD MÁS RÁPIDA
+        float t = time * 0.8;
 
         vec3 finalColor = vec3(0.0);
 
-        // === 75% HACES FRÍOS (8 haces) ===
-        // p, xPos, width, yFreq, speed, phase, time
-        finalColor += teal        * calculateRain(p, -0.85, 0.010, 4.0, 1.2, 0.0, t);
-        finalColor += ultramarine * calculateRain(p, -0.65, 0.015, 2.5, 0.9, 1.5, t);
-        finalColor += violet      * calculateRain(p, -0.40, 0.008, 5.0, 1.6, 3.2, t);
-        finalColor += teal        * calculateRain(p, -0.20, 0.012, 3.0, 1.1, 5.1, t);
+        // === DISTRIBUCIÓN DE HACES (Mayor densidad a la derecha) ===
+        // calculatePill(p, xPos, width, yFreq, speed, phase, pillLength, t)
         
-        finalColor += ultramarine * calculateRain(p,  0.15, 0.010, 4.5, 1.3, 2.4, t);
-        finalColor += violet      * calculateRain(p,  0.35, 0.018, 2.0, 0.8, 4.7, t);
-        finalColor += teal        * calculateRain(p,  0.60, 0.014, 3.5, 1.4, 0.8, t);
-        finalColor += ultramarine * calculateRain(p,  0.80, 0.009, 5.5, 1.7, 6.3, t);
+        // Izquierda (Menos densa)
+        finalColor += ultramarine * calculatePill(p, -0.85, 0.006, 1.5, 0.8, 0.0, 0.3, t);
+        finalColor += teal        * calculatePill(p, -0.65, 0.008, 2.0, 1.2, 0.5, 0.4, t);
+        finalColor += violet      * calculatePill(p, -0.40, 0.004, 1.8, 0.9, 0.2, 0.2, t);
+        finalColor += crimson     * calculatePill(p, -0.25, 0.005, 2.5, 1.5, 0.8, 0.3, t) * 0.8;
+        
+        // Centro (Protegido, densidad baja)
+        finalColor += teal        * calculatePill(p, -0.10, 0.007, 1.2, 0.7, 0.4, 0.3, t);
+        finalColor += ultramarine * calculatePill(p,  0.15, 0.005, 1.6, 1.1, 0.9, 0.25, t);
+        
+        // Derecha (MUY densa, según requerimiento)
+        finalColor += violet      * calculatePill(p,  0.30, 0.009, 1.4, 1.0, 0.1, 0.35, t);
+        finalColor += teal        * calculatePill(p,  0.42, 0.005, 2.2, 1.6, 0.7, 0.2, t);
+        finalColor += orange      * calculatePill(p,  0.55, 0.006, 1.8, 1.3, 0.3, 0.4, t) * 0.8;
+        finalColor += ultramarine * calculatePill(p,  0.65, 0.008, 1.5, 0.9, 0.6, 0.3, t);
+        finalColor += amber       * calculatePill(p,  0.72, 0.004, 2.8, 1.8, 0.2, 0.15, t) * 0.7;
+        finalColor += teal        * calculatePill(p,  0.80, 0.007, 1.7, 1.1, 0.8, 0.45, t);
+        finalColor += violet      * calculatePill(p,  0.88, 0.005, 2.0, 1.4, 0.5, 0.25, t);
+        finalColor += ultramarine * calculatePill(p,  0.95, 0.006, 1.3, 0.8, 0.9, 0.3, t);
+        finalColor += crimson     * calculatePill(p,  1.05, 0.008, 1.9, 1.2, 0.1, 0.35, t) * 0.8;
 
-        // === 25% HACES CÁLIDOS (2 haces) - Acentos sutiles vibrantes ===
-        // Multiplicamos por 0.8 y 0.7 para que no dominen la mezcla fría
-        finalColor += crimson * calculateRain(p, -0.55, 0.011, 3.2, 1.5, 4.2, t) * 0.85;
-        finalColor += orange  * calculateRain(p,  0.50, 0.007, 6.0, 2.0, 1.1, t) * 0.75;
-
-        // PROTECCIÓN DE TEXTURA CENTRAL (Para facilitar la lectura del texto)
+        // PROTECCIÓN DE TEXTURA CENTRAL (Atenúa el fondo tras el texto)
         float centerDist = length(vec2(p.x * 1.5, p.y * 0.6));
-        float textProtection = smoothstep(0.2, 1.5, centerDist);
-        finalColor *= mix(0.3, 1.0, textProtection); // 30% de intensidad en el centro
+        float textProtection = smoothstep(0.2, 1.2, centerDist);
+        finalColor *= mix(0.15, 1.0, textProtection); // 15% de opacidad en el centro
 
-        // REGLA 4: TONE MAPPING / MEZCLA ADITIVA (Soft Clamp)
-        // Evita que los colores se vuelvan blanco puro al cruzarse, manteniendo pureza
-        finalColor = 1.0 - exp(-finalColor * 1.5);
+        // Tone Mapping (Soft Clamp)
+        finalColor = 1.0 - exp(-finalColor * 1.2);
 
         gl_FragColor = vec4(finalColor, 1.0);
       }
@@ -172,7 +179,7 @@ export default function WebGLShader({ className = "absolute inset-0 w-full h-ful
   }, [])
 
   return (
-    <div ref={containerRef} className={className}>
+    <div ref={containerRef} className={className} style={style}>
       <canvas ref={canvasRef} className="w-full h-full block" />
     </div>
   )

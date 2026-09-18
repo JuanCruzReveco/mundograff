@@ -86,8 +86,12 @@ import WebGLShader from "../components/ui/web-gl-shader.tsx";
     <!-- Sección de Trayectoria (Herencia y Jerarquía) -->
     <section id="trayectoria" class="relative bg-black py-32 overflow-hidden flex flex-col items-center justify-center text-center">
       
-      <!-- Fondo animado WebGL (Lluvia Digital / Rieles) -->
-      <WebGLShader client:only="react" className="absolute inset-0 w-full h-full pointer-events-none opacity-90 mix-blend-screen" />
+      <!-- Fondo animado WebGL (Lluvia Digital / Rieles con difuminado en bordes) -->
+      <WebGLShader 
+        client:only="react" 
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-90 mix-blend-screen"
+        style={{ WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)", maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)" }}
+      />
 
       <!-- Contenido de la Sección -->
       <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center reveal-on-scroll">

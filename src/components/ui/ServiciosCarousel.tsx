@@ -444,8 +444,7 @@ const SERVICIOS_SLIDES = [
 
 export default function ServiciosCarousel() {
   return (
-    // REGLA 1: Fondo Negro Puro
-    <div className="w-full overflow-hidden bg-black py-4 flex flex-col items-center justify-center">
+    <div className="w-full overflow-hidden bg-transparent py-4 flex flex-col items-center justify-center">
       <div className="w-full max-w-6xl mx-auto">
         <CoverflowCarousel 
           slides={SERVICIOS_SLIDES} 

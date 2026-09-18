@@ -52,20 +52,27 @@ function TunnelLayer({
       className="absolute pointer-events-none"
       style={{ x, y, willChange: "transform" }}
     >
+      {/* Padre: se encarga exclusivamente de escalar */}
       <div
-        className="tunnel-ring"
+        className="tunnel-ring-scaler"
         style={{
-          width: "65vw",
-          height: "70vh",
-          marginLeft: "-32.5vw",
-          marginTop: "-35vh",
-          background: gradient,
-          // Se elimina el `filter: blur` porque el `radial-gradient` a transparent ya genera el esfumado.
-          // Esto ahorra un 95% del costo de renderizado en GPU, eliminando el lag.
-          borderRadius: "50%",
           animationDelay: `-${layer.delay}s`,
         }}
-      />
+      >
+        {/* Hijo: contiene el filtro pesado pero estático, rasterizado en GPU */}
+        <div
+          style={{
+            width: "65vw",
+            height: "70vh",
+            marginLeft: "-32.5vw",
+            marginTop: "-35vh",
+            background: gradient,
+            filter: "blur(35px)",
+            borderRadius: "50%",
+            transform: "translateZ(0)", // Fuerza la creación de una capa de composición estática
+          }}
+        />
+      </div>
     </motion.div>
   );
 }
@@ -160,7 +167,8 @@ export default function AnimatedFooter() {
             opacity: 0;
           }
         }
-        .tunnel-ring {
+        /* El SCALER se encarga únicamente de animar la escala y opacidad */
+        .tunnel-ring-scaler {
           position: absolute;
           top: 50%;
           left: 50%;

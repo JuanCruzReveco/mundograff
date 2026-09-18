@@ -1,8 +1,8 @@
 ---
 // Importamos el nav con efecto de letras animadas
 import RandomLetterSwapNav from "../components/ui/random-letter-swap-nav.tsx";
-// Importamos el nuevo footer corporativo
-import Footer from "../components/Footer.astro";
+// Importamos el footer animado tipo cajón infinito
+import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
 ---
 
 <html lang="es">
@@ -80,7 +80,7 @@ import Footer from "../components/Footer.astro";
       </div>
     </main>
 
-    <!-- Footer Corporativo -->
-    <Footer />
+    <!-- Footer Animado 3D -->
+    <AnimatedFooter client:visible />
   </body>
 </html>

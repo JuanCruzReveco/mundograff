@@ -121,8 +121,7 @@ export default function AnimatedFooter() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="relative overflow-hidden min-h-[50vh] flex flex-col justify-between cursor-default"
-      // Fondo oscuro CÁLIDO (no negro puro)
-      style={{ backgroundColor: "#1a060a" }}
+      style={{ backgroundColor: "#050B1A" }}
     >
       {/* CSS Keyframes */}
       <style>{`
@@ -169,70 +168,115 @@ export default function AnimatedFooter() {
         ))}
       </div>
 
-      {/* ═══════ CONTENIDO ═══════ */}
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start w-full max-w-7xl mx-auto px-10 pt-10 pointer-events-auto">
-        <h3 className="max-w-md font-heading font-extrabold text-2xl md:text-3xl text-white leading-snug tracking-tight drop-shadow-lg">
-          Producción gráfica integral.{" "}
-          <span className="text-slate-400 font-semibold">
-            El respaldo de oficio que tu marca necesita.
-          </span>
-        </h3>
-
-        <nav className="flex flex-col items-start md:items-end gap-2 mt-6 md:mt-0">
-          {[
-            { label: "Inicio", href: "/#inicio" },
-            { label: "Servicios", href: "/#servicios" },
-            { label: "Contacto", href: "/#contacto" },
-          ].map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.href)}
-              className="text-white font-sans font-semibold text-base hover:text-[#FF5A00] transition-colors duration-300"
-            >
-              {item.label}
+      {/* ═══════ CONTENIDO CORPORATIVO (REDISEÑO) ═══════ */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-10 pointer-events-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+          
+          {/* Columna Izquierda: Marca y CTA (Ocupa 5 espacios) */}
+          <div className="md:col-span-5 flex flex-col items-start">
+            <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="block">
+              <img 
+                src="/temaoscuro/logo-horizontal-oscuro.png" 
+                alt="MundoGraff" 
+                className="h-10 w-auto mb-6 object-contain hover:opacity-90 transition-opacity" 
+              />
             </a>
-          ))}
-        </nav>
-      </div>
-
-      {/* ═══════ BOTTOM ═══════ */}
-      <div className="relative z-10 w-full px-10 pb-8 max-w-7xl mx-auto flex flex-col gap-6 pointer-events-auto">
-        
-        {/* Fila inferior: Botón + Copyright izquierda | Logo derecha */}
-        <div className="flex items-end justify-between w-full">
-          <div className="flex flex-col items-start gap-4">
-            {/* Botón Pedir Presupuesto con aura naranja */}
-            <a
+            <p className="text-neutral-400 font-sans text-sm max-w-sm mb-8 leading-relaxed">
+              Producción gráfica integral. El respaldo de oficio que tu marca necesita.
+            </p>
+            <a 
               href="https://wa.me/542615109808?text=Hola%20MundoGraff,%20quisiera%20pedir%20un%20presupuesto"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-full bg-black/80 border border-[#FF5A00]/30 text-white font-sans font-semibold text-sm overflow-hidden transition-all duration-500 hover:border-[#FF5A00]/70 hover:shadow-[0_0_25px_rgba(255,90,0,0.3)]"
+              className="bg-gradient-to-r from-[#9E002B] to-[#FF5A00] text-white font-heading font-bold text-sm px-6 py-3 rounded-full hover:scale-105 transition-transform inline-flex items-center w-max shadow-[0_0_20px_rgba(255,90,0,0.3)] hover:shadow-[0_0_25px_rgba(255,90,0,0.5)]"
             >
-              {/* Aura naranja animada */}
-              <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: "inset 0 0 30px 5px rgba(255,90,0,0.15)" }} />
-              {/* Brillo rotativo naranja en el borde */}
-              <span className="absolute inset-[-1px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-spin" style={{ background: "conic-gradient(from 0deg, transparent, #FF5A00, transparent, transparent)", animationDuration: "3s", mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", maskComposite: "exclude", WebkitMaskComposite: "xor", padding: "1.5px" }} />
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#FF5A00] relative z-10">
-                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-              </svg>
-              <span className="relative z-10">Pedir Presupuesto</span>
+              Pedir un presupuesto
             </a>
-
-            {/* Copyright */}
-            <p className="text-xs text-neutral-500 uppercase tracking-widest font-sans">
-              © 2026 MUNDOGRAFF
-            </p>
           </div>
 
-          {/* Logo a la derecha ajustado */}
-          <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="hover:opacity-90 transition-opacity">
-            <img
-              src="/temaoscuro/logo_horizontal-removebg-preview.png"
-              alt="MundoGraff"
-              className="h-16 md:h-24 w-auto object-contain"
-            />
-          </a>
+          {/* Columnas Derechas: Enlaces (Ocupa 7 espacios) */}
+          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6">
+            
+            {/* Columna 1: SERVICIOS */}
+            <div>
+              <h3 className="text-xs font-heading tracking-widest text-neutral-500 uppercase mb-6">
+                Servicios
+              </h3>
+              <ul className="flex flex-col gap-4">
+                {[
+                  { label: "Inicio", href: "/#inicio" },
+                  { label: "Cartelería e Impresiones", href: "/#servicios" },
+                  { label: "Sobre Nosotros", href: "/#nosotros" },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Columna 2: CONTACTO */}
+            <div>
+              <h3 className="text-xs font-heading tracking-widest text-neutral-500 uppercase mb-6">
+                Contacto
+              </h3>
+              <ul className="flex flex-col gap-4">
+                <li>
+                  <a href="mailto:mundograff@hotmail.com" className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
+                    mundograff@hotmail.com
+                  </a>
+                </li>
+                <li>
+                  <a href="https://wa.me/542615109808" target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
+                    +54 9 261 510-9808
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.facebook.com/profile.php?id=1606520581&locale=es_LA" target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
+                    Facebook
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.instagram.com/mundograff_impresiones/" target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
+                    Instagram
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Columna 3: LEGAL */}
+            <div>
+              <h3 className="text-xs font-heading tracking-widest text-neutral-500 uppercase mb-6">
+                Legal
+              </h3>
+              <ul className="flex flex-col gap-4">
+                {[
+                  { label: "Política de privacidad", href: "/privacidad" },
+                  { label: "Uso de cookies", href: "/privacidad#cookies" },
+                  { label: "Términos y condiciones", href: "/privacidad#terminos" },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-sm text-neutral-300 font-sans hover:text-[#FF5A00] transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Cierre: Copyright */}
+        <div className="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-neutral-500 font-sans">
+            © 2026 MundoGraff. Todos los derechos reservados.
+          </p>
+          <p className="text-xs text-neutral-500 font-sans">
+            Hecho por Antigravity
+          </p>
         </div>
       </div>
     </footer>

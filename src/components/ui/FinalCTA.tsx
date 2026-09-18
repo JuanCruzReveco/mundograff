@@ -394,11 +394,17 @@ const FinalCTA: React.FC = () => {
         {/* Hero Content Overlay */}
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-white px-6">
           
-          {/* Trust Badge */}
+          {/* Trust Badge "Piola" */}
           <div className="mb-10">
-              <div className="flex items-center gap-2 px-6 py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-sm shadow-xl">
-                <span className="text-yellow-400">✨</span>
-                <span className="text-neutral-300 tracking-wide font-medium">GARANTÍA DE TRES GENERACIONES</span>
+              <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-black/40 backdrop-blur-md border border-[#FF5A00]/30 rounded-full text-sm shadow-[0_0_15px_rgba(255,90,0,0.15)] transition-all hover:border-[#FF5A00]/60 hover:shadow-[0_0_20px_rgba(255,90,0,0.25)]">
+                {/* Pulsing Dot */}
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5A00] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#FF5A00]"></span>
+                </span>
+                <span className="text-neutral-200 tracking-widest font-bold uppercase text-xs md:text-sm">
+                  3 Generaciones de Oficio Gráfico
+                </span>
               </div>
           </div>
 

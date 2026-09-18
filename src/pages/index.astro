@@ -1,0 +1,184 @@
+---
+// Importamos el componente interactivo de tubos 3D
+import TubesCursor from "../components/ui/tubes-cursor.tsx";
+// Importamos el nuevo carrusel 3D de servicios
+import ServiciosCarousel from "../components/ui/ServiciosCarousel.tsx";
+// Importamos el botón animado para WhatsApp
+import { ShinyButton } from "../components/ui/shiny-button.tsx";
+// Importamos el nav con efecto de letras animadas
+import RandomLetterSwapNav from "../components/ui/random-letter-swap-nav.tsx";
+// Importamos la sección de ubicación con mapa interactivo
+import UbicacionSection from "../components/ui/UbicacionSection.tsx";
+// Importamos el footer animado tipo cajón infinito
+import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>MundoGraff | Cartelería, Papelería e Impresiones</title>
+    <!-- Importación de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Ruta corregida para el Favicon del Tema Oscuro -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/temaoscuro/isotipo-removebg-preview.png"
+    />
+  </head>
+  <body class="bg-black font-sans text-neutral-400 scroll-smooth">
+    <!-- Navbar Píldora Flotante con Glassmorphism -->
+    <RandomLetterSwapNav client:visible />
+
+    <!-- Hero interactivo con Tubes Cursor -->
+    <section id="inicio" class="bg-black">
+      <TubesCursor client:only="react" />
+    </section>
+
+    <!-- Sección de Servicios (Lienzo Negro Infinito) -->
+    <section id="servicios" class="py-24 bg-black">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="text-center max-w-3xl mx-auto mb-10 reveal-on-scroll">
+          <span
+            class="text-neutral-500 font-heading font-extrabold text-xs uppercase tracking-widest"
+          >
+            Lo que te ofrecemos
+          </span>
+          <h2
+            class="font-heading text-4xl md:text-5xl font-extrabold mt-4 mb-6 uppercase tracking-tight bg-gradient-to-br from-[#FF5A00] to-[#FFA200] text-transparent bg-clip-text drop-shadow-[0_2px_15px_rgba(255,90,0,0.4)]"
+          >
+            Nuestros Servicios
+          </h2>
+          <p class="text-neutral-400 text-lg">
+            Combinamos el oficio de toda la vida con tecnología moderna para
+            darte soluciones rápidas, resistentes y con el color que necesitás.
+          </p>
+        </div>
+
+        <!-- Renderizado del Coverflow 3D -->
+        <div class="reveal-on-scroll">
+          <ServiciosCarousel client:visible />
+        </div>
+        
+        <!-- REGLA 2 y 3: Botón brillante enlazando a WhatsApp con el SVG alineado -->
+        <div class="mt-12 flex justify-center w-full reveal-on-scroll">
+          <ShinyButton 
+            client:visible 
+            href="https://wa.me/542615109808?text=Hola%20MundoGraff,%20quisiera%20pedir%20un%20presupuesto"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            Pedir Presupuesto
+          </ShinyButton>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Trayectoria (Herencia y Jerarquía) -->
+    <section id="trayectoria" class="relative bg-black py-32 overflow-hidden flex flex-col items-center justify-center text-center">
+      
+      <!-- Estilos de Animación de Caída (Lluvia de Luz) -->
+      <style>
+        @keyframes beam-fall {
+          0% { transform: translateY(-150%); opacity: 0; }
+          10% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { transform: translateY(250%); opacity: 0; }
+        }
+        .beam {
+          animation: beam-fall linear infinite;
+        }
+        /* Tiempos de caída y retrasos asimétricos para mayor naturalidad */
+        .beam-1 { animation-duration: 15s; animation-delay: -2s; }
+        .beam-2 { animation-duration: 22s; animation-delay: -10s; }
+        .beam-3 { animation-duration: 18s; animation-delay: -5s; }
+        .beam-4 { animation-duration: 25s; animation-delay: -15s; }
+        .beam-5 { animation-duration: 19s; animation-delay: -7s; }
+        .beam-6 { animation-duration: 21s; animation-delay: -12s; }
+        .beam-7 { animation-duration: 17s; animation-delay: -1s; }
+      </style>
+
+      <!-- REGLA 2: LÍNEAS VERTICALES ANIMADAS -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-80 mix-blend-screen">
+        <div class="absolute left-[10%] top-0 w-[2px] h-[60%] bg-gradient-to-b from-[#008E7A] to-transparent shadow-[0_0_15px_#008E7A] blur-[1px] beam beam-1"></div>
+        <div class="absolute left-[25%] top-0 w-1 h-[80%] bg-gradient-to-b from-[#2A4B9C] to-transparent shadow-[0_0_20px_#2A4B9C] blur-[2px] opacity-80 beam beam-2"></div>
+        <div class="absolute left-[40%] top-0 w-[1px] h-[50%] bg-gradient-to-b from-[#7A225B] to-transparent shadow-[0_0_15px_#7A225B] beam beam-3"></div>
+        <div class="absolute left-[55%] top-0 w-[3px] h-[90%] bg-gradient-to-b from-[#008E7A] to-transparent shadow-[0_0_25px_#008E7A] blur-[2px] opacity-70 beam beam-4"></div>
+        <div class="absolute left-[70%] top-0 w-[2px] h-[70%] bg-gradient-to-b from-[#0C1C47] to-transparent shadow-[0_0_15px_#0C1C47] beam beam-5"></div>
+        <div class="absolute left-[85%] top-0 w-1 h-[40%] bg-gradient-to-b from-[#7A225B] to-transparent shadow-[0_0_20px_#7A225B] blur-[1px] opacity-90 beam beam-6"></div>
+        <div class="absolute left-[95%] top-0 w-[2px] h-[75%] bg-gradient-to-b from-[#008E7A] to-transparent shadow-[0_0_15px_#008E7A] blur-[1px] beam beam-7"></div>
+      </div>
+
+      <!-- Contenido de la Sección -->
+      <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center reveal-on-scroll">
+        
+        <!-- REGLA 3: SOBRETÍTULO -->
+        <div class="flex items-center gap-3 mb-10">
+          <span class="w-2 h-2 rounded-full bg-[#008E7A] shadow-[0_0_8px_#008E7A] animate-pulse"></span>
+          <span class="text-[10px] tracking-[0.3em] uppercase text-neutral-400 font-bold">
+            Nuestra Trayectoria
+          </span>
+        </div>
+
+        <!-- REGLA 4: TÍTULO GIGANTE -->
+        <h2 class="font-heading text-4xl md:text-5xl font-extrabold text-white leading-[1.1] md:leading-[1.1] lg:leading-[1.1] max-w-4xl mx-auto drop-shadow-2xl">
+          Tradición y evolución: <span class="text-[#008E7A]">Tres generaciones</span> transformando el oficio gráfico en soluciones de alto impacto.
+        </h2>
+
+        <!-- REGLA 5: PÁRRAFO BIOGRÁFICO -->
+        <p class="mt-12 max-w-3xl mx-auto font-sans text-neutral-400 text-lg md:text-xl leading-relaxed text-center">
+          En 1994, Juan Carlos Reveco fundó nuestra primera imprenta en Maipú, construida a puro pulmón junto a entrañables familiares y amigos. En ese taller aprendimos el oficio desde abajo hasta tomar las riendas de la siguiente generación. Con ese mismo empuje, en 2020 dimos el gran salto a nuestra actual planta en la zona industrial. Hoy seguimos apostando por tecnología de punta, manteniendo intacta la dedicación y calidad que nos vio nacer.
+        </p>
+      </div>
+    </section>
+
+    <!-- Sección de Ubicación con Mapa Interactivo -->
+    <UbicacionSection client:visible />
+
+    <!-- Footer Animado 3D -->
+    <AnimatedFooter client:visible />
+
+    <!-- Script de Animación al Hacer Scroll (Fade Up Suave) -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("reveal-visible");
+                observer.unobserve(entry.target); // Solo animar la primera vez
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px",
+          }
+        );
+
+        document.querySelectorAll(".reveal-on-scroll").forEach((el) => {
+          observer.observe(el);
+        });
+      });
+    </script>
+    <style is:global>
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        will-change: opacity, transform;
+      }
+      .reveal-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </body>
+</html>

@@ -42,28 +42,45 @@ export default function RandomLetterSwapNav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
-    const isHome = document.getElementById('inicio') !== null || document.getElementById('servicios') !== null;
+    const isAnchorToHome = targetId.startsWith('/#');
+    const isAnchorToPrivacy = targetId.startsWith('/privacidad#');
+    
+    const currentPath = window.location.pathname;
+    const isHome = currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/mundograff/') || document.getElementById('inicio') !== null;
+    const isCurrentlyPrivacy = currentPath.includes('/privacidad');
 
-    if (isHome) {
-      const element = document.querySelector(targetId.replace('/', ''));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      } else if (targetId.includes('#inicio')) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isAnchorToHome) {
+      e.preventDefault();
+      const anchor = targetId.replace('/', '');
+      if (isHome) {
+        const element = document.querySelector(anchor);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        } else if (anchor === '#inicio') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        window.history.pushState(null, '', anchor);
+      } else {
+        let homeUrl = '/';
+        if (isCurrentlyPrivacy) {
+          homeUrl = currentPath.split('/privacidad')[0] + '/';
+        }
+        window.location.href = homeUrl + anchor;
       }
-      window.history.pushState(null, '', targetId.replace('/', ''));
+    } else if (isAnchorToPrivacy) {
+      if (isCurrentlyPrivacy) {
+        e.preventDefault();
+        const anchor = targetId.replace('/privacidad', '');
+        const element = document.querySelector(anchor);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+        window.history.pushState(null, '', anchor);
+      }
+      // Si no estamos en privacidad, dejamos que el enlace funcione normalmente y cargue la página
     } else {
-      let currentPath = window.location.pathname;
-      let homeUrl = '/';
-      
-      if (currentPath.includes('/privacidad')) {
-        homeUrl = currentPath.split('/privacidad')[0] + '/';
-      }
-      
-      window.location.href = homeUrl + targetId.replace('/', '');
+      // Enlaces normales (/privacidad, mailto:, etc). Dejamos que el navegador maneje la navegación.
     }
   };
 

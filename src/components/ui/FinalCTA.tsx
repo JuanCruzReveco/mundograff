@@ -385,8 +385,14 @@ const FinalCTA: React.FC = () => {
           style={{ background: 'black' }}
         />
         
+        {/* Degradado superior para fundir el borde del video suavemente con el fondo */}
+        <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none" />
+        
+        {/* Degradado inferior para transición suave hacia el Footer */}
+        <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
+        
         {/* Hero Content Overlay */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-6">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-white px-6">
           
           {/* Trust Badge */}
           <div className="mb-10">

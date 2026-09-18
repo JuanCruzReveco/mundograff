@@ -7,9 +7,10 @@ interface ShinyButtonProps {
   onClick?: () => void
   className?: string
   href?: string
+  style?: React.CSSProperties
 }
 
-export function ShinyButton({ children, onClick, className = "", href }: ShinyButtonProps) {
+export function ShinyButton({ children, onClick, className = "", href, style }: ShinyButtonProps) {
   const content = <span>{children}</span>
 
   return (
@@ -209,11 +210,11 @@ export function ShinyButton({ children, onClick, className = "", href }: ShinyBu
 
       {/* REGLA 2: Implementación de Enlace (<a>) si hay href */}
       {href ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={`shiny-cta ${className}`} onClick={onClick}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={`shiny-cta ${className}`} onClick={onClick} style={style}>
           {content}
         </a>
       ) : (
-        <button className={`shiny-cta ${className}`} onClick={onClick}>
+        <button className={`shiny-cta ${className}`} onClick={onClick} style={style}>
           {content}
         </button>
       )}

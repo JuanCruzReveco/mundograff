@@ -9,6 +9,8 @@ import { ShinyButton } from "../components/ui/shiny-button.tsx";
 import RandomLetterSwapNav from "../components/ui/random-letter-swap-nav.tsx";
 // Importamos la sección de ubicación con mapa interactivo
 import UbicacionSection from "../components/ui/UbicacionSection.tsx";
+// Importamos la sección de Clientes con el carrusel 3D
+import ClientesSection from "../components/ui/ClientesSection.tsx";
 // Importamos el footer animado tipo cajón infinito
 import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
 // Importamos el fondo de lluvia digital WebGL
@@ -120,6 +122,9 @@ import CookieBanner from "../components/ui/CookieBanner.tsx";
 
     <!-- Sección de Ubicación con Mapa Interactivo -->
     <UbicacionSection client:visible />
+
+    <!-- Sección de Nuestros Clientes (Carrusel 3D) -->
+    <ClientesSection client:visible />
 
     <!-- Footer Animado 3D -->
     <AnimatedFooter client:visible />

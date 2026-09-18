@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { LiquidButton } from "./liquid-glass-button";
 
 // Reusable Shader Background Hook
 const useShaderBackground = () => {
@@ -356,63 +355,83 @@ void main(void) {
 	O=vec4(col,1);
 }`;
 
+import { motion, useScroll, useTransform } from 'framer-motion';
+
 const FinalCTA: React.FC = () => {
   const canvasRef = useShaderBackground();
+  const containerRef = useRef<HTMLElement>(null);
 
-  const handleCtaClick = () => {
-    window.open("https://wa.me/542615109808", "_blank");
-  };
+  // Animación de "encaje" como video (Framer Motion)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "center center"]
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
+  const borderRadius = useTransform(scrollYProgress, [0, 1], [40, 0]);
 
   return (
-    <section id="cta-final" className="relative w-full min-h-[80vh] overflow-hidden bg-black flex items-center justify-center">
+    <section ref={containerRef} id="cta-final" className="relative w-full h-[100dvh] bg-black flex items-center justify-center overflow-hidden">
       
-      {/* Canvas WebGL Background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover touch-none pointer-events-none"
-        style={{ background: 'black' }}
-      />
-      
-      {/* Hero Content Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-6">
+      {/* Contenedor Animado que hace el efecto "Encaje de Video" */}
+      <motion.div 
+        style={{ scale, borderRadius }}
+        className="relative w-full h-full overflow-hidden flex items-center justify-center"
+      >
+        {/* Canvas WebGL Background */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full object-cover touch-none pointer-events-none"
+          style={{ background: 'black' }}
+        />
         
-        {/* Trust Badge */}
-        <div className="mb-8">
-            <div className="flex items-center gap-2 px-6 py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-sm shadow-xl">
-              <span className="text-yellow-400">✨</span>
-              <span className="text-neutral-300 tracking-wide font-medium">GARANTÍA DE TRES GENERACIONES</span>
-            </div>
-        </div>
+        {/* Hero Content Overlay */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-6">
+          
+          {/* Trust Badge */}
+          <div className="mb-10">
+              <div className="flex items-center gap-2 px-6 py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-sm shadow-xl">
+                <span className="text-yellow-400">✨</span>
+                <span className="text-neutral-300 tracking-wide font-medium">GARANTÍA DE TRES GENERACIONES</span>
+              </div>
+          </div>
 
-        <div className="text-center space-y-6 max-w-4xl mx-auto">
-          {/* Main Heading */}
-          <div className="space-y-2 leading-tight">
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white tracking-tight drop-shadow-md">
-              ¿Listo para potenciar
-            </h2>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black bg-gradient-to-r from-[#9E002B] to-[#FF5A00] bg-clip-text text-transparent drop-shadow-lg pb-2">
-              la imagen de tu marca?
-            </h2>
-          </div>
-          
-          {/* Subtitle */}
-          <div className="max-w-2xl mx-auto pt-2 pb-6">
-            <p className="text-lg md:text-xl text-neutral-400 font-sans leading-relaxed">
-              Contactanos hoy mismo y transformemos tus ideas en cartelería e impresiones de alto impacto.
-            </p>
-          </div>
-          
-          {/* Liquid Button CTA */}
-          <div className="flex justify-center mt-8">
-            <LiquidButton 
-              onClick={handleCtaClick}
-              className="bg-gradient-to-r from-[#9E002B] to-[#FF5A00] text-white font-heading font-bold tracking-wide text-lg px-8 py-6 rounded-full shadow-[0_0_30px_rgba(255,90,0,0.5)] border-none"
-            >
-              SOLICITAR PRESUPUESTO
-            </LiquidButton>
+          <div className="text-center space-y-6 max-w-4xl mx-auto">
+            {/* Main Heading */}
+            <div className="space-y-2 leading-tight">
+              <h2 className="text-5xl md:text-7xl font-heading font-bold text-white tracking-tight drop-shadow-md">
+                ¿Listo para potenciar
+              </h2>
+              <h2 className="text-5xl md:text-7xl font-heading font-black bg-gradient-to-r from-[#9E002B] to-[#FF5A00] bg-clip-text text-transparent drop-shadow-lg pb-2">
+                la imagen de tu marca?
+              </h2>
+            </div>
+            
+            {/* Subtitle */}
+            <div className="max-w-2xl mx-auto pt-4 pb-8">
+              <p className="text-lg md:text-xl text-neutral-400 font-sans leading-relaxed">
+                Contactanos hoy mismo y transformemos tus ideas en cartelería e impresiones de alto impacto.
+              </p>
+            </div>
+            
+            {/* Botón Idéntico al Navbar */}
+            <div className="flex justify-center mt-6">
+              <a
+                href="https://wa.me/542615109808?text=Hola%20MundoGraff,%20quisiera%20pedir%20un%20presupuesto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-[#FF5A00] hover:bg-[#FFA200] text-black font-heading font-extrabold text-lg px-10 py-5 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,90,0,0.5)] hover:shadow-[0_0_30px_rgba(255,162,0,0.7)] hover:scale-105"
+              >
+                <span>SOLICITAR PRESUPUESTO</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-[#000000]">
+                  <path d="M7 17L17 7"/>
+                  <path d="M7 7h10v10"/>
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

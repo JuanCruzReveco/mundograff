@@ -6,28 +6,24 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 // ─── 12 capas alternando entre CÁLIDAS y OSCURAS-CÁLIDAS ───
 // No hay negro puro: las capas oscuras son marrón/burdeo profundo.
 // Al expandirse ambas, el fondo "respira" entre claro y oscuro sin cortes.
-const LAYER_COUNT = 12;
-const CYCLE_DURATION = 20; // lento y armónico
+const LAYER_COUNT = 6; // Reducido para evitar overdraw masivo en GPUs integradas
+const CYCLE_DURATION = 20;
 
 const LAYERS = Array.from({ length: LAYER_COUNT }, (_, i) => ({
   delay: (i / LAYER_COUNT) * CYCLE_DURATION,
-  parallax: 10 + i * 6,
-  // Alternamos: par = cálido vibrante, impar = oscuro cálido
+  parallax: 15 + i * 8, // Aumenté el factor parallax para compensar la menor cantidad de capas
   isWarm: i % 2 === 0,
 }));
 
-// Degradés cálidos vibrantes (carmesí → naranja)
+// Degradés simulando Gaussian Blur puro (curva exponencial de opacidad)
 const WARM_GRADIENTS = [
-  "radial-gradient(ellipse at center, rgba(255,90,0,0.75) 0%, rgba(158,0,43,0.6) 45%, rgba(80,5,18,0.15) 80%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(158,0,43,0.7) 0%, rgba(255,90,0,0.5) 40%, rgba(100,10,20,0.15) 80%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(255,120,40,0.65) 0%, rgba(200,20,30,0.5) 45%, rgba(80,5,15,0.1) 80%, transparent 100%)",
+  "radial-gradient(ellipse at center, rgba(255,90,0,0.5) 0%, rgba(158,0,43,0.25) 30%, rgba(80,5,18,0.08) 60%, rgba(40,2,8,0.02) 85%, transparent 100%)",
+  "radial-gradient(ellipse at center, rgba(158,0,43,0.45) 0%, rgba(255,90,0,0.2) 30%, rgba(100,10,20,0.08) 60%, rgba(50,5,10,0.02) 85%, transparent 100%)",
 ];
 
-// Degradés oscuros cálidos (marrón/burdeo, NO negro puro)
 const DARK_GRADIENTS = [
-  "radial-gradient(ellipse at center, rgba(30,8,12,0.85) 0%, rgba(60,12,20,0.5) 40%, rgba(40,8,14,0.15) 80%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(40,10,16,0.8) 0%, rgba(50,10,18,0.45) 45%, rgba(35,6,12,0.1) 80%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(25,6,10,0.85) 0%, rgba(55,12,20,0.5) 40%, rgba(30,5,10,0.15) 80%, transparent 100%)",
+  "radial-gradient(ellipse at center, rgba(30,8,12,0.6) 0%, rgba(60,12,20,0.25) 35%, rgba(40,8,14,0.08) 65%, rgba(20,4,7,0.02) 85%, transparent 100%)",
+  "radial-gradient(ellipse at center, rgba(40,10,16,0.55) 0%, rgba(50,10,18,0.2) 35%, rgba(35,6,12,0.08) 65%, rgba(15,3,5,0.02) 85%, transparent 100%)",
 ];
 
 function TunnelLayer({
@@ -52,14 +48,12 @@ function TunnelLayer({
       className="absolute pointer-events-none"
       style={{ x, y, willChange: "transform" }}
     >
-      {/* Padre: se encarga exclusivamente de escalar */}
       <div
         className="tunnel-ring-scaler"
         style={{
           animationDelay: `-${layer.delay}s`,
         }}
       >
-        {/* Hijo: contiene el filtro pesado pero estático, rasterizado en GPU */}
         <div
           style={{
             width: "65vw",
@@ -67,9 +61,9 @@ function TunnelLayer({
             marginLeft: "-32.5vw",
             marginTop: "-35vh",
             background: gradient,
-            filter: "blur(35px)",
+            // Cero filtros: todo el suavizado lo hace el radial-gradient
             borderRadius: "50%",
-            transform: "translateZ(0)", // Fuerza la creación de una capa de composición estática
+            transform: "translateZ(0)", 
           }}
         />
       </div>
@@ -86,10 +80,11 @@ export default function AnimatedFooter() {
   const mouseY = useSpring(rawMouseY, { stiffness: 80, damping: 20, mass: 0.8 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const nx = (e.clientX - rect.left) / rect.width - 0.5;
-    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    // Calculamos el ratio directamente usando el viewport.
+    // Esto evita llamar a getBoundingClientRect() en cada frame de mouse,
+    // lo cual causaba "Layout Thrashing" (cuello de botella en el procesador) y tirones al scrollear.
+    const nx = (e.clientX / window.innerWidth) - 0.5;
+    const ny = (e.clientY / window.innerHeight) - 0.5;
     rawMouseX.set(nx);
     rawMouseY.set(ny);
   };

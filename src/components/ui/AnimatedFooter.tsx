@@ -1,99 +1,10 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ShinyButton } from "./shiny-button";
-
-// ─── 12 capas alternando entre CÁLIDAS y OSCURAS-CÁLIDAS ───
-// No hay negro puro: las capas oscuras son marrón/burdeo profundo.
-// Al expandirse ambas, el fondo "respira" entre claro y oscuro sin cortes.
-const LAYER_COUNT = 6; // Reducido para evitar overdraw masivo en GPUs integradas
-const CYCLE_DURATION = 20;
-
-const LAYERS = Array.from({ length: LAYER_COUNT }, (_, i) => ({
-  delay: (i / LAYER_COUNT) * CYCLE_DURATION,
-  parallax: 15 + i * 8, // Aumenté el factor parallax para compensar la menor cantidad de capas
-  isWarm: i % 2 === 0,
-}));
-
-// Degradés simulando Gaussian Blur puro (curva exponencial de opacidad)
-const WARM_GRADIENTS = [
-  "radial-gradient(ellipse at center, rgba(255,90,0,0.5) 0%, rgba(158,0,43,0.25) 30%, rgba(80,5,18,0.08) 60%, rgba(40,2,8,0.02) 85%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(158,0,43,0.45) 0%, rgba(255,90,0,0.2) 30%, rgba(100,10,20,0.08) 60%, rgba(50,5,10,0.02) 85%, transparent 100%)",
-];
-
-const DARK_GRADIENTS = [
-  "radial-gradient(ellipse at center, rgba(30,8,12,0.6) 0%, rgba(60,12,20,0.25) 35%, rgba(40,8,14,0.08) 65%, rgba(20,4,7,0.02) 85%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(40,10,16,0.55) 0%, rgba(50,10,18,0.2) 35%, rgba(35,6,12,0.08) 65%, rgba(15,3,5,0.02) 85%, transparent 100%)",
-];
-
-function TunnelLayer({
-  layer,
-  index,
-  mouseX,
-  mouseY,
-}: {
-  layer: (typeof LAYERS)[number];
-  index: number;
-  mouseX: ReturnType<typeof useSpring>;
-  mouseY: ReturnType<typeof useSpring>;
-}) {
-  const x = useTransform(mouseX, (v) => v * layer.parallax);
-  const y = useTransform(mouseY, (v) => v * layer.parallax);
-
-  const gradients = layer.isWarm ? WARM_GRADIENTS : DARK_GRADIENTS;
-  const gradient = gradients[index % gradients.length];
-
-  return (
-    <motion.div
-      className="absolute pointer-events-none"
-      style={{ x, y, willChange: "transform" }}
-    >
-      <div
-        className="tunnel-ring-scaler"
-        style={{
-          animationDelay: `-${layer.delay}s`,
-        }}
-      >
-        <div
-          style={{
-            width: "65vw",
-            height: "70vh",
-            marginLeft: "-32.5vw",
-            marginTop: "-35vh",
-            background: gradient,
-            // Cero filtros: todo el suavizado lo hace el radial-gradient
-            borderRadius: "50%",
-            transform: "translateZ(0)", 
-          }}
-        />
-      </div>
-    </motion.div>
-  );
-}
 
 export default function AnimatedFooter() {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const rawMouseX = useMotionValue(0);
-  const rawMouseY = useMotionValue(0);
-  const mouseX = useSpring(rawMouseX, { stiffness: 80, damping: 20, mass: 0.8 });
-  const mouseY = useSpring(rawMouseY, { stiffness: 80, damping: 20, mass: 0.8 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    // Calculamos el ratio directamente usando el viewport.
-    // Esto evita llamar a getBoundingClientRect() en cada frame de mouse,
-    // lo cual causaba "Layout Thrashing" (cuello de botella en el procesador) y tirones al scrollear.
-    const nx = (e.clientX / window.innerWidth) - 0.5;
-    const ny = (e.clientY / window.innerHeight) - 0.5;
-    rawMouseX.set(nx);
-    rawMouseY.set(ny);
-  };
-
-  const handleMouseLeave = () => {
-    rawMouseX.set(0);
-    rawMouseY.set(0);
-  };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     const isAnchorToHome = targetId.startsWith('/#');
@@ -140,57 +51,8 @@ export default function AnimatedFooter() {
   return (
     <footer
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden min-h-[50vh] flex flex-col justify-between cursor-default"
-      style={{ backgroundColor: "#050B1A" }}
+      className="relative overflow-hidden min-h-[50vh] flex flex-col justify-between cursor-default bg-black"
     >
-      {/* CSS Keyframes */}
-      <style>{`
-        @keyframes tunnel-expand {
-          0% {
-            transform: scale(0.12);
-            opacity: 0;
-          }
-          6% {
-            opacity: 0.9;
-          }
-          70% {
-            opacity: 0.7;
-          }
-          100% {
-            transform: scale(1.8);
-            opacity: 0;
-          }
-        }
-        /* El SCALER se encarga únicamente de animar la escala y opacidad */
-        .tunnel-ring-scaler {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          animation: tunnel-expand ${CYCLE_DURATION}s linear infinite;
-          will-change: transform, opacity;
-        }
-      `}</style>
-
-      {/* ═══════ TÚNEL: Capas cálidas + oscuras alternándose ═══════ */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        {/* Resplandor ambiental cálido de fondo */}
-        <div
-          className="absolute"
-          style={{
-            width: "120%",
-            height: "120%",
-            background: "radial-gradient(ellipse at center, rgba(158,0,43,0.15) 0%, rgba(26,6,10,1) 65%)",
-          }}
-        />
-
-        {/* Las 12 capas expandiéndose */}
-        {LAYERS.map((layer, i) => (
-          <TunnelLayer key={i} layer={layer} index={i} mouseX={mouseX} mouseY={mouseY} />
-        ))}
-      </div>
-
       {/* ═══════ CONTENIDO CORPORATIVO (REDISEÑO) ═══════ */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-10 pointer-events-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">

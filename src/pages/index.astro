@@ -19,6 +19,8 @@ import WebGLShader from "../components/ui/web-gl-shader.tsx";
 import CookieBanner from "../components/ui/CookieBanner.tsx";
 // Importamos la sección final interactiva
 import FinalCTA from "../components/ui/FinalCTA.tsx";
+// Importamos el fondo de túnel 3D para la sección de servicios
+import TunnelBackground from "../components/ui/TunnelBackground.tsx";
 ---
 
 <html lang="es">
@@ -50,9 +52,19 @@ import FinalCTA from "../components/ui/FinalCTA.tsx";
       <TubesCursor client:only="react" />
     </section>
 
-    <!-- Sección de Servicios (Lienzo Negro Infinito) -->
-    <section id="servicios" class="py-12 bg-black">
-      <div class="max-w-7xl mx-auto px-6">
+    <!-- Sección de Servicios (Lienzo Negro Infinito con Túnel 3D) -->
+    <section id="servicios" class="relative overflow-hidden py-12 bg-black">
+      
+      <!-- Fondo animado 3D de túnel infinito trasladado desde el Footer -->
+      <TunnelBackground client:load />
+      
+      <!-- Degradado superior para fundir con la sección anterior -->
+      <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none"></div>
+      
+      <!-- Degradado inferior para fundir con la sección siguiente -->
+      <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none"></div>
+
+      <div class="relative z-20 max-w-7xl mx-auto px-6 pointer-events-auto">
         <div class="text-center max-w-3xl mx-auto mb-2 reveal-on-scroll">
           <span
             class="text-neutral-500 font-heading font-extrabold text-xs uppercase tracking-widest"

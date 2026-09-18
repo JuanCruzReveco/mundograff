@@ -57,33 +57,38 @@ export default function WebGLShader({ className = "absolute inset-0 w-full h-ful
         vec3 orange      = vec3(1.000, 0.353, 0.000); // #FF5A00
         vec3 amber       = vec3(1.000, 0.635, 0.000); // #FFA200 (Extra para variedad)
 
-        // VELOCIDAD MÁS RÁPIDA
-        float t = time * 0.8;
+        // VELOCIDAD MÁS RÁPIDA (Solicitado)
+        float t = time * 1.2;
 
         vec3 finalColor = vec3(0.0);
 
         // === DISTRIBUCIÓN DE HACES (Mayor densidad a la derecha) ===
         // calculatePill(p, xPos, width, yFreq, speed, phase, pillLength, t)
         
-        // Izquierda (Menos densa)
+        // Izquierda
         finalColor += ultramarine * calculatePill(p, -0.85, 0.006, 1.5, 0.8, 0.0, 0.3, t);
+        finalColor += teal        * calculatePill(p, -0.72, 0.005, 2.2, 1.4, 0.3, 0.2, t); // Nuevo
         finalColor += teal        * calculatePill(p, -0.65, 0.008, 2.0, 1.2, 0.5, 0.4, t);
         finalColor += violet      * calculatePill(p, -0.40, 0.004, 1.8, 0.9, 0.2, 0.2, t);
         finalColor += crimson     * calculatePill(p, -0.25, 0.005, 2.5, 1.5, 0.8, 0.3, t) * 0.8;
         
         // Centro (Protegido, densidad baja)
         finalColor += teal        * calculatePill(p, -0.10, 0.007, 1.2, 0.7, 0.4, 0.3, t);
+        finalColor += violet      * calculatePill(p,  0.05, 0.004, 2.0, 1.1, 0.7, 0.2, t); // Nuevo
         finalColor += ultramarine * calculatePill(p,  0.15, 0.005, 1.6, 1.1, 0.9, 0.25, t);
         
-        // Derecha (MUY densa, según requerimiento)
+        // Derecha (DENSIDAD ALTA)
         finalColor += violet      * calculatePill(p,  0.30, 0.009, 1.4, 1.0, 0.1, 0.35, t);
         finalColor += teal        * calculatePill(p,  0.42, 0.005, 2.2, 1.6, 0.7, 0.2, t);
+        finalColor += orange      * calculatePill(p,  0.48, 0.007, 1.5, 1.2, 0.4, 0.25, t) * 0.7; // Nuevo
         finalColor += orange      * calculatePill(p,  0.55, 0.006, 1.8, 1.3, 0.3, 0.4, t) * 0.8;
         finalColor += ultramarine * calculatePill(p,  0.65, 0.008, 1.5, 0.9, 0.6, 0.3, t);
         finalColor += amber       * calculatePill(p,  0.72, 0.004, 2.8, 1.8, 0.2, 0.15, t) * 0.7;
+        finalColor += teal        * calculatePill(p,  0.77, 0.006, 2.0, 1.3, 0.9, 0.3, t); // Nuevo
         finalColor += teal        * calculatePill(p,  0.80, 0.007, 1.7, 1.1, 0.8, 0.45, t);
         finalColor += violet      * calculatePill(p,  0.88, 0.005, 2.0, 1.4, 0.5, 0.25, t);
         finalColor += ultramarine * calculatePill(p,  0.95, 0.006, 1.3, 0.8, 0.9, 0.3, t);
+        finalColor += crimson     * calculatePill(p,  0.98, 0.005, 2.5, 1.5, 0.2, 0.2, t) * 0.8; // Nuevo
         finalColor += crimson     * calculatePill(p,  1.05, 0.008, 1.9, 1.2, 0.1, 0.35, t) * 0.8;
 
         // PROTECCIÓN DE TEXTURA CENTRAL (Atenúa el fondo tras el texto)
@@ -153,8 +158,9 @@ export default function WebGLShader({ className = "absolute inset-0 w-full h-ful
       if (!refs.renderer || !refs.uniforms || !containerRef.current) return
       const width = containerRef.current.clientWidth
       const height = containerRef.current.clientHeight
+      const dpr = window.devicePixelRatio || 1
       refs.renderer.setSize(width, height, false)
-      refs.uniforms.resolution.value = [width, height]
+      refs.uniforms.resolution.value = [width * dpr, height * dpr]
     }
 
     // Usar ResizeObserver para que se adapte siempre al padre (la sección)

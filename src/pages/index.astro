@@ -17,6 +17,8 @@ import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
 import WebGLShader from "../components/ui/web-gl-shader.tsx";
 // Importamos el banner flotante de cookies
 import CookieBanner from "../components/ui/CookieBanner.tsx";
+// Importamos la sección final interactiva
+import FinalCTA from "../components/ui/FinalCTA.tsx";
 ---
 
 <html lang="es">
@@ -125,6 +127,9 @@ import CookieBanner from "../components/ui/CookieBanner.tsx";
 
     <!-- Sección de Nuestros Clientes (Carrusel 3D) -->
     <ClientesSection client:visible />
+
+    <!-- Sección de CTA Final con WebGL -->
+    <FinalCTA client:only="react" />
 
     <!-- Footer Animado 3D -->
     <AnimatedFooter client:visible />

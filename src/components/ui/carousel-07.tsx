@@ -17,11 +17,20 @@ interface Slide {
   description: string;
   badge: string;
   badgeColor: "teal" | "crimson" | "orange";
+  fullCover?: boolean;
 }
 
 const slides: Slide[] = [
   {
-    image: "/clientes/vistalba-logo-png_seeklogo-149844.png",
+    image: "/clientes/maf logo.jpg",
+    title: "MAF",
+    description: "Agroindustria comprometida con la excelencia y la calidad.",
+    badge: "Agroindustria",
+    badgeColor: "teal",
+    fullCover: true
+  },
+  {
+    image: "/clientes/vistalba-logo-png_seeklogo-149844-removebg-preview.png",
     title: "Bodega Vistalba",
     description: "Prestigiosa bodega de Luján de Cuyo, elaboradora de vinos de alta gama.",
     badge: "Bodega",
@@ -35,7 +44,7 @@ const slides: Slide[] = [
     badgeColor: "teal"
   },
   {
-    image: "/clientes/mitre srl.png",
+    image: "/clientes/mitre_srl-removebg-preview.png",
     title: "Transportes Mitre",
     description: "Reconocida empresa de transporte de pasajeros y logística de Mendoza.",
     badge: "Transporte",
@@ -49,25 +58,32 @@ const slides: Slide[] = [
     badgeColor: "teal"
   },
   {
-    image: "/clientes/brunetti.jpg",
+    image: "/clientes/brunetti-removebg-preview.png",
     title: "Armando Brunetti",
     description: "Empresa histórica dedicada a la fruticultura, empaque y comercialización.",
     badge: "Agroindustria",
     badgeColor: "crimson"
   },
   {
-    image: "/clientes/logo-elecnor-1.svg",
+    image: "/clientes/elecnor-removebg-preview.png",
     title: "Grupo Elecnor",
-    description: "Grupo global de ingeniería, desarrollo de infraestructuras y energía.",
+    description: "Compañía global en desarrollo y construcción de proyectos.",
     badge: "Ingeniería",
     badgeColor: "teal"
   },
   {
-    image: "/clientes/soeva.jpg",
+    image: "/clientes/soeva-removebg-preview.png",
     title: "SOEVA",
     description: "Sindicato de Obreros y Empleados Vitivinícolas y Afines de la provincia.",
     badge: "Institución",
     badgeColor: "orange"
+  },
+  {
+    image: "/clientes/images-removebg-preview.png",
+    title: "IAR",
+    description: "Empresa creadora de audífonos con la más alta tecnología.",
+    badge: "Salud",
+    badgeColor: "crimson"
   }
 ];
 
@@ -261,12 +277,18 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
         "bg-[#0A0A0A] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]" // REGLA 1: Gris ultra oscuro cristal
       )}
     >
-      {/* REGLA 1: Imagen del logotipo (object-contain, sin filtros oscurecedores) */}
-      <div className="absolute inset-0 p-8 pb-28 flex items-center justify-center">
+      {/* REGLA 1: Imagen del logotipo */}
+      <div className={cn(
+        "absolute inset-0 flex items-center justify-center",
+        slide.fullCover ? "" : "p-8 pb-28"
+      )}>
         <img
           src={slide.image}
           alt={slide.title}
-          className="w-full h-full object-contain pointer-events-none transition-transform duration-700 group-hover:scale-105"
+          className={cn(
+            "w-full h-full pointer-events-none transition-transform duration-700 group-hover:scale-105",
+            slide.fullCover ? "object-cover" : "object-contain"
+          )}
         />
       </div>
 

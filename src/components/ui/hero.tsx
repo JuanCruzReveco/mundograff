@@ -1,4 +1,4 @@
-import { WebGLShader } from "./web-gl-shader.tsx";
+import WebGLShader from "./web-gl-shader.tsx";
 import { LiquidButton } from "./liquid-glass-button.tsx";
 
 export default function HeroReact() {

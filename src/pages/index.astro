@@ -13,6 +13,8 @@ import UbicacionSection from "../components/ui/UbicacionSection.tsx";
 import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
 // Importamos el fondo de lluvia digital WebGL
 import WebGLShader from "../components/ui/web-gl-shader.tsx";
+// Importamos el banner flotante de cookies
+import CookieBanner from "../components/ui/CookieBanner.tsx";
 ---
 
 <html lang="es">
@@ -121,6 +123,9 @@ import WebGLShader from "../components/ui/web-gl-shader.tsx";
 
     <!-- Footer Animado 3D -->
     <AnimatedFooter client:visible />
+
+    <!-- Banner de Cookies Flotante -->
+    <CookieBanner client:load />
 
     <!-- Script de Animación al Hacer Scroll (Fade Up Suave) -->
     <script>

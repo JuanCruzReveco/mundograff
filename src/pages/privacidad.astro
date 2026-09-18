@@ -1,0 +1,86 @@
+---
+// Importamos el nav con efecto de letras animadas
+import RandomLetterSwapNav from "../components/ui/random-letter-swap-nav.tsx";
+// Importamos el footer animado tipo cajón infinito
+import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Política de Privacidad | MundoGraff</title>
+    <!-- Importación de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Ruta corregida para el Favicon del Tema Oscuro -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/temaoscuro/isotipo-removebg-preview.png"
+    />
+  </head>
+  <body class="bg-black font-sans text-neutral-400 scroll-smooth flex flex-col min-h-screen">
+    <!-- Navbar Píldora Flotante con Glassmorphism -->
+    <RandomLetterSwapNav client:visible />
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-4xl mx-auto px-6 py-32 md:py-40">
+      
+      <!-- Título de la Página -->
+      <div class="mb-16 border-b border-white/10 pb-10">
+        <h1 class="font-heading text-4xl md:text-5xl font-extrabold text-white uppercase tracking-tight">
+          Política de <span class="text-[#FF5A00]">Privacidad</span>
+        </h1>
+        <p class="mt-4 text-neutral-500 text-sm tracking-widest uppercase">
+          Última actualización: Septiembre de 2026
+        </p>
+      </div>
+
+      <!-- Secciones Legales -->
+      <div class="space-y-12">
+        
+        <section>
+          <h2 class="font-heading text-2xl font-bold text-white mb-4">1. Recopilación de Datos</h2>
+          <p class="font-sans text-neutral-400 leading-relaxed">
+            El presente sitio web de <strong>MundoGraff</strong> es de naturaleza estrictamente informativa y comercial. No recopilamos información financiera, ni números de tarjetas de crédito, ni contraseñas. Los únicos datos de carácter personal que obtenemos son aquellos que el usuario decide proveer de forma libre y voluntaria al comunicarse a través de nuestros canales de contacto (como WhatsApp). Asimismo, recopilamos métricas de navegación anónimas con el único propósito de entender el flujo de visitantes en nuestra plataforma.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-heading text-2xl font-bold text-white mb-4">2. Uso de la Información</h2>
+          <p class="font-sans text-neutral-400 leading-relaxed">
+            Toda información de contacto proporcionada por los usuarios se utiliza de forma exclusiva para fines de atención al cliente. Esto incluye la resolución de dudas, el envío de presupuestos personalizados y la gestión de proyectos relacionados con nuestros servicios de cartelería, papelería, plóters y diseño gráfico. <strong>MundoGraff</strong> se compromete a no vender, alquilar ni ceder los datos personales a terceros con fines publicitarios.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-heading text-2xl font-bold text-white mb-4">3. Servicios de Terceros y Cookies</h2>
+          <p class="font-sans text-neutral-400 leading-relaxed">
+            Nuestra plataforma se encuentra alojada en servidores externos provistos por Vercel Inc., quienes manejan protocolos de seguridad estándar de la industria. Adicionalmente, utilizamos cookies propias y de terceros para optimizar la experiencia del usuario y realizar analíticas de tráfico. Al navegar por nuestro sitio, el usuario consiente el uso de estas cookies. Si desea revocar este permiso, puede configurar su navegador para bloquearlas o eliminar el historial de navegación.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-heading text-2xl font-bold text-white mb-4">4. Contacto Legal</h2>
+          <p class="font-sans text-neutral-400 leading-relaxed">
+            Ante cualquier consulta, reclamo o solicitud vinculada a sus datos personales y la presente Política de Privacidad, ponemos a disposición los siguientes canales oficiales de comunicación:
+          </p>
+          <ul class="mt-4 space-y-2 font-sans text-neutral-300">
+            <li><strong class="text-white">Correo Electrónico:</strong> <a href="mailto:mundograff@hotmail.com" class="hover:text-[#FF5A00] transition-colors underline-offset-4 hover:underline">mundograff@hotmail.com</a></li>
+            <li><strong class="text-white">Dirección de la Planta:</strong> Maza Norte 3557, M5515 Maipú, Mendoza, República Argentina.</li>
+          </ul>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Footer Animado 3D -->
+    <AnimatedFooter client:visible />
+  </body>
+</html>

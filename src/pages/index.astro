@@ -87,7 +87,7 @@ import WebGLShader from "../components/ui/web-gl-shader.tsx";
     <section id="trayectoria" class="relative bg-black py-32 overflow-hidden flex flex-col items-center justify-center text-center">
       
       <!-- Fondo animado WebGL (Lluvia Digital / Rieles) -->
-      <WebGLShader client:only="react" />
+      <WebGLShader client:only="react" className="absolute inset-0 w-full h-full pointer-events-none opacity-90 mix-blend-screen" />
 
       <!-- Contenido de la Sección -->
       <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center reveal-on-scroll">

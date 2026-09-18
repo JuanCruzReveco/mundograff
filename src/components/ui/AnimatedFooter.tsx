@@ -96,7 +96,7 @@ export default function AnimatedFooter() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden min-h-[95vh] flex flex-col justify-between cursor-default"
+      className="relative overflow-hidden min-h-[50vh] flex flex-col justify-between cursor-default"
       // Fondo oscuro CÁLIDO (no negro puro)
       style={{ backgroundColor: "#1a060a" }}
     >
@@ -146,7 +146,7 @@ export default function AnimatedFooter() {
       </div>
 
       {/* ═══════ CONTENIDO ═══════ */}
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start w-full max-w-7xl mx-auto px-10 pt-14 pointer-events-auto">
+      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start w-full max-w-7xl mx-auto px-10 pt-10 pointer-events-auto">
         <h3 className="max-w-md font-heading font-extrabold text-2xl md:text-3xl text-white leading-snug tracking-tight drop-shadow-lg">
           Producción gráfica integral.{" "}
           <span className="text-slate-400 font-semibold">
@@ -154,7 +154,7 @@ export default function AnimatedFooter() {
           </span>
         </h3>
 
-        <nav className="flex flex-col items-start md:items-end gap-2 mt-8 md:mt-0">
+        <nav className="flex flex-col items-start md:items-end gap-2 mt-6 md:mt-0">
           {[
             { label: "Inicio", href: "#inicio" },
             { label: "Servicios", href: "#servicios" },
@@ -172,7 +172,7 @@ export default function AnimatedFooter() {
       </div>
 
       {/* ═══════ BOTTOM ═══════ */}
-      <div className="relative z-10 w-full px-10 pb-10 max-w-7xl mx-auto flex flex-col gap-6 pointer-events-auto">
+      <div className="relative z-10 w-full px-10 pb-8 max-w-7xl mx-auto flex flex-col gap-6 pointer-events-auto">
         
         {/* Fila inferior: Botón + Copyright izquierda | Logo derecha */}
         <div className="flex items-end justify-between w-full">
@@ -182,13 +182,13 @@ export default function AnimatedFooter() {
               href="https://wa.me/542615109808?text=Hola%20MundoGraff,%20quisiera%20pedir%20un%20presupuesto"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-black/80 border border-[#FF5A00]/30 text-white font-sans font-semibold text-base overflow-hidden transition-all duration-500 hover:border-[#FF5A00]/70 hover:shadow-[0_0_25px_rgba(255,90,0,0.3)]"
+              className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-full bg-black/80 border border-[#FF5A00]/30 text-white font-sans font-semibold text-sm overflow-hidden transition-all duration-500 hover:border-[#FF5A00]/70 hover:shadow-[0_0_25px_rgba(255,90,0,0.3)]"
             >
               {/* Aura naranja animada */}
               <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: "inset 0 0 30px 5px rgba(255,90,0,0.15)" }} />
               {/* Brillo rotativo naranja en el borde */}
               <span className="absolute inset-[-1px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-spin" style={{ background: "conic-gradient(from 0deg, transparent, #FF5A00, transparent, transparent)", animationDuration: "3s", mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", maskComposite: "exclude", WebkitMaskComposite: "xor", padding: "1.5px" }} />
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#FF5A00] relative z-10">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#FF5A00] relative z-10">
                 <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
               </svg>
               <span className="relative z-10">Pedir Presupuesto</span>
@@ -200,12 +200,12 @@ export default function AnimatedFooter() {
             </p>
           </div>
 
-          {/* Logo más grande a la derecha */}
+          {/* Logo a la derecha ajustado */}
           <a href="#inicio" className="hover:opacity-90 transition-opacity">
             <img
               src="/temaoscuro/logo_horizontal-removebg-preview.png"
               alt="MundoGraff"
-              className="h-20 md:h-28 w-auto object-contain"
+              className="h-16 md:h-24 w-auto object-contain"
             />
           </a>
         </div>

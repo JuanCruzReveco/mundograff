@@ -17,8 +17,8 @@ export default {
         'mundo-oscuro': '#111827',    // Gris oscuro/carbón para lectura y footer
       },
       fontFamily: {
-        'sans': ['Inter', 'sans-serif'],
-        'heading': ['Montserrat', 'sans-serif'],
+        'sans': ['"Momo Trust Display"', 'sans-serif'],
+        'heading': ['"Momo Trust Display"', 'sans-serif'],
       }
     },
   },

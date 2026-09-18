@@ -91,6 +91,30 @@ export default function AnimatedFooter() {
     rawMouseY.set(0);
   };
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const isHome = document.getElementById('inicio') !== null || document.getElementById('servicios') !== null;
+
+    if (isHome) {
+      const element = document.querySelector(targetId.replace('/', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else if (targetId.includes('#inicio')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      window.history.pushState(null, '', targetId.replace('/', ''));
+    } else {
+      let currentPath = window.location.pathname;
+      let homeUrl = '/';
+      
+      if (currentPath.includes('/privacidad')) {
+        homeUrl = currentPath.split('/privacidad')[0] + '/';
+      }
+      
+      window.location.href = homeUrl + targetId.replace('/', '');
+    }
+  };
+
   return (
     <footer
       ref={containerRef}
@@ -163,6 +187,7 @@ export default function AnimatedFooter() {
             <a
               key={item.label}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className="text-white font-sans font-semibold text-base hover:text-[#FF5A00] transition-colors duration-300"
             >
               {item.label}
@@ -201,7 +226,7 @@ export default function AnimatedFooter() {
           </div>
 
           {/* Logo a la derecha ajustado */}
-          <a href="/#inicio" className="hover:opacity-90 transition-opacity">
+          <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="hover:opacity-90 transition-opacity">
             <img
               src="/temaoscuro/logo_horizontal-removebg-preview.png"
               alt="MundoGraff"

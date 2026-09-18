@@ -43,6 +43,30 @@ export default function RandomLetterSwapNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const isHome = document.getElementById('inicio') !== null || document.getElementById('servicios') !== null;
+
+    if (isHome) {
+      const element = document.querySelector(targetId.replace('/', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else if (targetId.includes('#inicio')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      window.history.pushState(null, '', targetId.replace('/', ''));
+    } else {
+      let currentPath = window.location.pathname;
+      let homeUrl = '/';
+      
+      if (currentPath.includes('/privacidad')) {
+        homeUrl = currentPath.split('/privacidad')[0] + '/';
+      }
+      
+      window.location.href = homeUrl + targetId.replace('/', '');
+    }
+  };
+
   return (
     <nav
       className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-5xl flex items-center justify-between bg-black/50 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-6 py-2.5 shadow-2xl shadow-black/70 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
@@ -52,7 +76,7 @@ export default function RandomLetterSwapNav() {
       }`}
     >
       {/* Izquierda: Logotipo Horizontal de Marca */}
-      <a href="/#inicio" className="flex items-center hover:opacity-90 transition-opacity">
+      <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="flex items-center hover:opacity-90 transition-opacity">
         <img
           src="/temaoscuro/logo_horizontal-removebg-preview.png"
           alt="MundoGraff"
@@ -66,6 +90,7 @@ export default function RandomLetterSwapNav() {
           <a
             key={link.label}
             href={link.href}
+            onClick={(e) => handleNavClick(e, link.href)}
             className="no-underline"
           >
             <RandomLetterSwap

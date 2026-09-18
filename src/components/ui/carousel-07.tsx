@@ -21,40 +21,54 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    image: "/clientes/logo1.png",
-    title: "Cliente Ejemplo",
-    description: "Cartelería y señalización industrial.",
-    badge: "Cartelería",
-    badgeColor: "teal"
-  },
-  {
-    image: "/clientes/logo2.png",
-    title: "Agencia Creativa",
-    description: "Diseño e impresión de papelería corporativa premium.",
-    badge: "Papelería",
+    image: "/clientes/vistalba-logo-png_seeklogo-149844.png",
+    title: "Bodega Vistalba",
+    description: "Prestigiosa bodega de Luján de Cuyo, elaboradora de vinos de alta gama.",
+    badge: "Bodega",
     badgeColor: "crimson"
   },
   {
-    image: "/clientes/logo3.png",
-    title: "Retail Express",
-    description: "Plóters de alta resolución para vidrieras y locales.",
-    badge: "Plóters",
+    image: "/clientes/logo-termax.png",
+    title: "Termax Argentina",
+    description: "Fabricación y venta de furgones térmicos y unidades móviles en Maipú.",
+    badge: "Industria",
+    badgeColor: "teal"
+  },
+  {
+    image: "/clientes/mitre srl.png",
+    title: "Transportes Mitre",
+    description: "Reconocida empresa de transporte de pasajeros y logística de Mendoza.",
+    badge: "Transporte",
     badgeColor: "orange"
   },
   {
-    image: "/clientes/logo4.png",
-    title: "Estudio Arquitectura",
-    description: "Letras corpóreas con iluminación LED frontal.",
-    badge: "Corpóreos",
+    image: "/clientes/cropped-01-GRUPO-TERRALOGIC-768x265.png.webp",
+    title: "Grupo Terralogic",
+    description: "Soluciones integrales en logística y transporte internacional de carga.",
+    badge: "Logística",
     badgeColor: "teal"
   },
   {
-    image: "/clientes/logo5.png",
-    title: "Logística Sur",
-    description: "Gráfica vehicular para flota pesada de distribución.",
-    badge: "Vehicular",
+    image: "/clientes/brunetti.jpg",
+    title: "Armando Brunetti",
+    description: "Empresa histórica dedicada a la fruticultura, empaque y comercialización.",
+    badge: "Agroindustria",
     badgeColor: "crimson"
   },
+  {
+    image: "/clientes/logo-elecnor-1.svg",
+    title: "Grupo Elecnor",
+    description: "Grupo global de ingeniería, desarrollo de infraestructuras y energía.",
+    badge: "Ingeniería",
+    badgeColor: "teal"
+  },
+  {
+    image: "/clientes/soeva.jpg",
+    title: "SOEVA",
+    description: "Sindicato de Obreros y Empleados Vitivinícolas y Afines de la provincia.",
+    badge: "Institución",
+    badgeColor: "orange"
+  }
 ];
 
 interface CarouselConfig {

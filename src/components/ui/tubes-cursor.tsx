@@ -83,7 +83,7 @@ export default function TubesCursor() {
         </p>
 
         {/* Indicador de Scroll → Sección Servicios */}
-        <a href="#servicios" className="mt-12 flex flex-col items-center gap-2 pointer-events-auto opacity-70 hover:opacity-100 transition-opacity duration-300 group">
+        <a href="/#servicios" className="mt-12 flex flex-col items-center gap-2 pointer-events-auto opacity-70 hover:opacity-100 transition-opacity duration-300 group">
           <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-300">
             Descubrí nuestros servicios
           </span>

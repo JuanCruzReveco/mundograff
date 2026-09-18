@@ -156,9 +156,9 @@ export default function AnimatedFooter() {
 
         <nav className="flex flex-col items-start md:items-end gap-2 mt-6 md:mt-0">
           {[
-            { label: "Inicio", href: "#inicio" },
-            { label: "Servicios", href: "#servicios" },
-            { label: "Contacto", href: "#contacto" },
+            { label: "Inicio", href: "/#inicio" },
+            { label: "Servicios", href: "/#servicios" },
+            { label: "Contacto", href: "/#contacto" },
           ].map((item) => (
             <a
               key={item.label}
@@ -201,7 +201,7 @@ export default function AnimatedFooter() {
           </div>
 
           {/* Logo a la derecha ajustado */}
-          <a href="#inicio" className="hover:opacity-90 transition-opacity">
+          <a href="/#inicio" className="hover:opacity-90 transition-opacity">
             <img
               src="/temaoscuro/logo_horizontal-removebg-preview.png"
               alt="MundoGraff"

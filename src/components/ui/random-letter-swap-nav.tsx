@@ -5,9 +5,9 @@ import { RandomLetterSwap } from "./random-letter-swap";
 
 // Array de objetos en español con anclas funcionales
 const links = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Trayectoria", href: "#trayectoria" },
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Trayectoria", href: "/#trayectoria" },
 ];
 
 export default function RandomLetterSwapNav() {
@@ -52,7 +52,7 @@ export default function RandomLetterSwapNav() {
       }`}
     >
       {/* Izquierda: Logotipo Horizontal de Marca */}
-      <a href="#inicio" className="flex items-center hover:opacity-90 transition-opacity">
+      <a href="/#inicio" className="flex items-center hover:opacity-90 transition-opacity">
         <img
           src="/temaoscuro/logo_horizontal-removebg-preview.png"
           alt="MundoGraff"

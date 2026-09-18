@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ShinyButton } from "./shiny-button";
 
 // ─── 12 capas alternando entre CÁLIDAS y OSCURAS-CÁLIDAS ───
 // No hay negro puro: las capas oscuras son marrón/burdeo profundo.
@@ -206,14 +207,12 @@ export default function AnimatedFooter() {
             <p className="text-neutral-400 font-sans text-sm max-w-sm mb-8 leading-relaxed">
               Producción gráfica integral. El respaldo de oficio que tu marca necesita.
             </p>
-            <a 
+            <ShinyButton 
               href="https://wa.me/542615109808?text=Hola%20MundoGraff,%20quisiera%20pedir%20un%20presupuesto"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-r from-[#9E002B] to-[#FF5A00] text-white font-heading font-bold text-sm px-6 py-3 rounded-full hover:scale-105 transition-transform inline-flex items-center w-max shadow-[0_0_20px_rgba(255,90,0,0.3)] hover:shadow-[0_0_25px_rgba(255,90,0,0.5)]"
             >
-              Pedir un presupuesto
-            </a>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+              Contáctanos
+            </ShinyButton>
           </div>
 
           {/* Columnas Derechas: Enlaces (Ocupa 8 espacios) */}

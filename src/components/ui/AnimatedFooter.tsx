@@ -192,10 +192,10 @@ export default function AnimatedFooter() {
 
       {/* ═══════ CONTENIDO CORPORATIVO (REDISEÑO) ═══════ */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-10 pointer-events-auto">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           
-          {/* Columna Izquierda: Marca y CTA (Ocupa 5 espacios) */}
-          <div className="md:col-span-5 flex flex-col items-start">
+          {/* Columna Izquierda: Marca y CTA (Ocupa 4 espacios) */}
+          <div className="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-8">
             <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="block">
               <img 
                 src="/temaoscuro/logo_horizontal-removebg-preview.png" 
@@ -216,8 +216,8 @@ export default function AnimatedFooter() {
             </a>
           </div>
 
-          {/* Columnas Derechas: Enlaces (Ocupa 7 espacios) */}
-          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6">
+          {/* Columnas Derechas: Enlaces (Ocupa 8 espacios) */}
+          <div className="lg:col-span-8 flex flex-col md:flex-row justify-between gap-12 md:gap-8">
             
             {/* Columna 1: NAVEGACIÓN */}
             <div>

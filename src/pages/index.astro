@@ -11,6 +11,8 @@ import RandomLetterSwapNav from "../components/ui/random-letter-swap-nav.tsx";
 import UbicacionSection from "../components/ui/UbicacionSection.tsx";
 // Importamos el footer animado tipo cajón infinito
 import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
+// Importamos el fondo de lluvia digital WebGL
+import WebGLShader from "../components/ui/web-gl-shader.tsx";
 ---
 
 <html lang="es">
@@ -84,37 +86,8 @@ import AnimatedFooter from "../components/ui/AnimatedFooter.tsx";
     <!-- Sección de Trayectoria (Herencia y Jerarquía) -->
     <section id="trayectoria" class="relative bg-black py-32 overflow-hidden flex flex-col items-center justify-center text-center">
       
-      <!-- Estilos de Animación de Caída (Lluvia de Luz) -->
-      <style>
-        @keyframes beam-fall {
-          0% { transform: translateY(-150%); opacity: 0; }
-          10% { opacity: 1; }
-          80% { opacity: 1; }
-          100% { transform: translateY(250%); opacity: 0; }
-        }
-        .beam {
-          animation: beam-fall linear infinite;
-        }
-        /* Tiempos de caída y retrasos asimétricos para mayor naturalidad */
-        .beam-1 { animation-duration: 15s; animation-delay: -2s; }
-        .beam-2 { animation-duration: 22s; animation-delay: -10s; }
-        .beam-3 { animation-duration: 18s; animation-delay: -5s; }
-        .beam-4 { animation-duration: 25s; animation-delay: -15s; }
-        .beam-5 { animation-duration: 19s; animation-delay: -7s; }
-        .beam-6 { animation-duration: 21s; animation-delay: -12s; }
-        .beam-7 { animation-duration: 17s; animation-delay: -1s; }
-      </style>
-
-      <!-- REGLA 2: LÍNEAS VERTICALES ANIMADAS -->
-      <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-80 mix-blend-screen">
-        <div class="absolute left-[10%] top-0 w-[2px] h-[60%] bg-gradient-to-b from-[#008E7A] to-transparent shadow-[0_0_15px_#008E7A] blur-[1px] beam beam-1"></div>
-        <div class="absolute left-[25%] top-0 w-1 h-[80%] bg-gradient-to-b from-[#2A4B9C] to-transparent shadow-[0_0_20px_#2A4B9C] blur-[2px] opacity-80 beam beam-2"></div>
-        <div class="absolute left-[40%] top-0 w-[1px] h-[50%] bg-gradient-to-b from-[#7A225B] to-transparent shadow-[0_0_15px_#7A225B] beam beam-3"></div>
-        <div class="absolute left-[55%] top-0 w-[3px] h-[90%] bg-gradient-to-b from-[#008E7A] to-transparent shadow-[0_0_25px_#008E7A] blur-[2px] opacity-70 beam beam-4"></div>
-        <div class="absolute left-[70%] top-0 w-[2px] h-[70%] bg-gradient-to-b from-[#0C1C47] to-transparent shadow-[0_0_15px_#0C1C47] beam beam-5"></div>
-        <div class="absolute left-[85%] top-0 w-1 h-[40%] bg-gradient-to-b from-[#7A225B] to-transparent shadow-[0_0_20px_#7A225B] blur-[1px] opacity-90 beam beam-6"></div>
-        <div class="absolute left-[95%] top-0 w-[2px] h-[75%] bg-gradient-to-b from-[#008E7A] to-transparent shadow-[0_0_15px_#008E7A] blur-[1px] beam beam-7"></div>
-      </div>
+      <!-- Fondo animado WebGL (Lluvia Digital / Rieles) -->
+      <WebGLShader client:only="react" />
 
       <!-- Contenido de la Sección -->
       <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center reveal-on-scroll">

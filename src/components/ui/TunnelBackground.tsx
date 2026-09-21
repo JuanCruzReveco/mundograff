@@ -12,16 +12,6 @@ const LAYERS = Array.from({ length: LAYER_COUNT }, (_, i) => ({
   isWarm: i % 2 === 0,
 }));
 
-const WARM_GRADIENTS = [
-  "radial-gradient(ellipse at center, rgba(255,90,0,0.5) 0%, rgba(158,0,43,0.25) 30%, rgba(80,5,18,0.08) 60%, rgba(40,2,8,0.02) 85%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(158,0,43,0.45) 0%, rgba(255,90,0,0.2) 30%, rgba(100,10,20,0.08) 60%, rgba(50,5,10,0.02) 85%, transparent 100%)",
-];
-
-const DARK_GRADIENTS = [
-  "radial-gradient(ellipse at center, rgba(30,8,12,0.6) 0%, rgba(60,12,20,0.25) 35%, rgba(40,8,14,0.08) 65%, rgba(20,4,7,0.02) 85%, transparent 100%)",
-  "radial-gradient(ellipse at center, rgba(40,10,16,0.55) 0%, rgba(50,10,18,0.2) 35%, rgba(35,6,12,0.08) 65%, rgba(15,3,5,0.02) 85%, transparent 100%)",
-];
-
 function TunnelLayer({
   layer,
   index,
@@ -36,8 +26,10 @@ function TunnelLayer({
   const x = useTransform(mouseX, (v) => v * layer.parallax);
   const y = useTransform(mouseY, (v) => v * layer.parallax);
 
-  const gradients = layer.isWarm ? WARM_GRADIENTS : DARK_GRADIENTS;
-  const gradient = gradients[index % gradients.length];
+  // Use CSS variables instead of JS arrays to prevent React re-renders on theme change
+  const gradientVar = layer.isWarm 
+    ? `var(--tunnel-warm-${index % 2})`
+    : `var(--tunnel-dark-${index % 2})`;
 
   return (
     <motion.div
@@ -56,7 +48,7 @@ function TunnelLayer({
             height: "70vh",
             marginLeft: "-32.5vw",
             marginTop: "-35vh",
-            background: gradient,
+            background: gradientVar,
             borderRadius: "50%",
             transform: "translateZ(0)", 
           }}
@@ -97,6 +89,20 @@ export default function TunnelBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       <style>{`
+        :root {
+          --tunnel-warm-0: radial-gradient(ellipse at center, rgba(255,90,0,0.12) 0%, rgba(255,162,0,0.06) 40%, transparent 80%);
+          --tunnel-warm-1: radial-gradient(ellipse at center, rgba(255,120,0,0.1) 0%, rgba(255,150,0,0.05) 45%, transparent 80%);
+          --tunnel-dark-0: radial-gradient(ellipse at center, rgba(12,28,71,0.08) 0%, rgba(12,28,71,0.03) 40%, transparent 80%);
+          --tunnel-dark-1: radial-gradient(ellipse at center, rgba(0,142,122,0.06) 0%, rgba(0,142,122,0.02) 45%, transparent 80%);
+          --tunnel-bg: radial-gradient(ellipse at center, rgba(255,90,0,0.12) 0%, transparent 75%);
+        }
+        :root.dark {
+          --tunnel-warm-0: radial-gradient(ellipse at center, rgba(255,90,0,0.3) 0%, rgba(158,0,43,0.15) 40%, transparent 80%);
+          --tunnel-warm-1: radial-gradient(ellipse at center, rgba(255,100,0,0.2) 0%, rgba(200,20,40,0.1) 45%, transparent 80%);
+          --tunnel-dark-0: radial-gradient(ellipse at center, rgba(12,28,71,0.2) 0%, rgba(0,142,122,0.1) 40%, transparent 80%);
+          --tunnel-dark-1: radial-gradient(ellipse at center, rgba(0,142,122,0.2) 0%, rgba(12,28,71,0.1) 45%, transparent 80%);
+          --tunnel-bg: radial-gradient(ellipse at center, rgba(255,90,0,0.15) 0%, transparent 70%);
+        }
         @keyframes tunnel-expand {
           0% {
             transform: scale(0.12);
@@ -122,13 +128,13 @@ export default function TunnelBackground() {
         }
       `}</style>
       
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center opacity-70 dark:opacity-100 transition-opacity duration-700">
         <div
           className="absolute"
           style={{
             width: "80vw",
             height: "80vh",
-            background: "radial-gradient(ellipse at center, rgba(30,8,12,0.8) 0%, transparent 70%)",
+            background: "var(--tunnel-bg)",
             borderRadius: "50%",
             transform: "translateZ(0)",
           }}

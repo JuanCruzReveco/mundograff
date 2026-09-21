@@ -68,16 +68,18 @@ export function LocationMap({
       onClick={handleClick}
     >
       <motion.div
-        className="relative overflow-hidden rounded-2xl bg-[#0A1124] border border-white/10 w-full mx-auto max-w-[380px]"
+        className={`relative overflow-hidden rounded-2xl bg-[#050B1A] border border-white/10 shadow-2xl cursor-pointer group origin-center mx-auto ${className || ""}`}
         style={{
           rotateX: springRotateX,
           rotateY: springRotateY,
           transformStyle: "preserve-3d",
         }}
         animate={{
-          maxWidth: isExpanded ? 380 : 260,
-          height: isExpanded ? 320 : 150,
+          width: isExpanded ? "100%" : 240,
+          maxWidth: isExpanded ? 380 : 240,
+          height: isExpanded ? 360 : 100,
         }}
+        whileHover={!isExpanded ? { scale: 1.05 } : {}}
         transition={{
           type: "spring",
           stiffness: 400,
@@ -99,7 +101,7 @@ export function LocationMap({
               <div className="absolute inset-0 bg-[#060E1E]" />
 
               <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                {/* Calles principales horizontales — Verde Teal */}
+                {/* Calles principales horizontales */}
                 <motion.line
                   x1="0%" y1="35%" x2="100%" y2="35%"
                   stroke="#008E7A" strokeWidth="4" strokeOpacity="0.6"
@@ -115,7 +117,7 @@ export function LocationMap({
                   transition={{ duration: 0.8, delay: 0.3 }}
                 />
 
-                {/* Calles principales verticales — Verde Teal */}
+                {/* Calles principales verticales */}
                 <motion.line
                   x1="30%" y1="0%" x2="30%" y2="100%"
                   stroke="#008E7A" strokeWidth="3" strokeOpacity="0.45"
@@ -131,18 +133,41 @@ export function LocationMap({
                   transition={{ duration: 0.6, delay: 0.5 }}
                 />
 
-                {/* Calles secundarias horizontales — Violeta */}
-                {[20, 50, 80].map((y, i) => (
+                {/* Rutas animadas tipo GPS (sin drop-shadow para evitar lag masivo en mobile) */}
+                {/* Calles principales */}
+                {[20, 40, 60, 80].map((y, i) => (
                   <motion.line
                     key={`h-${i}`}
                     x1="0%" y1={`${y}%`} x2="100%" y2={`${y}%`}
-                    stroke="#7A225B" strokeWidth="1.5" strokeOpacity="0.35"
+                    stroke="#008E7A" strokeWidth="1" strokeOpacity="0.3"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2 + i * 0.1 }}
+                  />
+                ))}
+                
+                {/* Ruta principal iluminada */}
+                <motion.path
+                  d="M 10% 80% L 35% 80% L 35% 40% L 75% 40% L 75% 20%"
+                  fill="none" stroke="#00E5FF" strokeWidth="3"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
+                />
+                
+                {/* Calles secundarias horizontales */}
+                {[30, 70].map((x, i) => (
+                  <motion.line
+                    key={`v-main-${i}`}
+                    x1={`${x}%`} y1="0%" x2={`${x}%`} y2="100%"
+                    stroke="#9E002B" strokeWidth="1" strokeOpacity="0.4"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
                   />
                 ))}
-                {/* Calles secundarias verticales — Violeta */}
+                
+                {/* Calles secundarias verticales */}
                 {[15, 45, 55, 85].map((x, i) => (
                   <motion.line
                     key={`v-${i}`}
@@ -174,7 +199,7 @@ export function LocationMap({
                 />
               ))}
 
-              {/* Pin de ubicación — Naranja Fuego */}
+              {/* Pin de ubicación 🌟 Naranja Fuego */}
               <motion.div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 initial={{ scale: 0, y: -20 }}
@@ -184,7 +209,6 @@ export function LocationMap({
                 <svg
                   width="32" height="32" viewBox="0 0 24 24" fill="none"
                   className="drop-shadow-lg"
-                  style={{ filter: "drop-shadow(0 0 10px rgba(255, 90, 0, 0.6))" }}
                 >
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#FF5A00" />
                   <circle cx="12" cy="9" r="2.5" fill="#0A1124" />
@@ -214,30 +238,24 @@ export function LocationMap({
 
         {/* Contenido */}
         <div className="relative z-10 h-full flex flex-col justify-between p-5">
-          {/* Top: ícono + indicador */}
+          {/* Top: Ícono + indicador */}
           <div className="flex items-start justify-between">
             <motion.div
               animate={{ opacity: isExpanded ? 0 : 1 }}
               transition={{ duration: 0.3 }}
             >
-              <motion.svg
+              <svg
                 width="18" height="18" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 className="text-[#FF5A00]"
-                animate={{
-                  filter: isHovered
-                    ? "drop-shadow(0 0 8px rgba(255, 90, 0, 0.6))"
-                    : "drop-shadow(0 0 4px rgba(255, 90, 0, 0.3))",
-                }}
-                transition={{ duration: 0.3 }}
               >
                 <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
                 <line x1="9" x2="9" y1="3" y2="18" />
                 <line x1="15" x2="15" y1="6" y2="21" />
-              </motion.svg>
+              </svg>
             </motion.div>
 
-            {/* Live dot — Naranja Fuego */}
+            {/* Live dot â€” Naranja Fuego */}
             <motion.div
               className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/5 backdrop-blur-sm"
               animate={{
@@ -247,7 +265,7 @@ export function LocationMap({
               transition={{ duration: 0.2 }}
             >
               <div className="w-1.5 h-1.5 rounded-full bg-[#FF5A00] animate-pulse" />
-              <span className="text-[10px] font-medium text-neutral-400 tracking-wide uppercase">Live</span>
+              <span className="text-[10px] font-medium text-white tracking-wide uppercase">Live</span>
             </motion.div>
           </div>
 
@@ -264,17 +282,17 @@ export function LocationMap({
             <AnimatePresence>
               {isExpanded && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10, height: 0 }}
-                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                  exit={{ opacity: 0, y: -10, height: 0 }}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.25 }}
                   className="space-y-3"
                 >
-                  <p className="text-neutral-500 text-xs font-mono">
+                  <p className="text-white/70 text-xs font-mono">
                     {coordinates}
                   </p>
 
-                  {/* Botón "Cómo llegar" — Glassmorphism oscuro */}
+                  {/* Botón "Cómo llegar" â€” Glassmorphism oscuro */}
                   <button
                     onClick={handleNavigation}
                     className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wide uppercase hover:bg-[#FF5A00] hover:border-[#FF5A00] transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,90,0,0.3)]"
@@ -289,7 +307,7 @@ export function LocationMap({
               )}
             </AnimatePresence>
 
-            {/* Línea animada inferior — Naranja Fuego */}
+            {/* Línea animada inferior â€” Naranja Fuego */}
             <motion.div
               className="h-px bg-gradient-to-r from-[#FF5A00]/50 via-[#FF5A00]/30 to-transparent"
               initial={{ scaleX: 0, originX: 0 }}

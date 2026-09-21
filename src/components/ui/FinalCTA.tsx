@@ -300,59 +300,117 @@ out vec4 O;
 uniform vec2 resolution;
 uniform float time;
 #define FC gl_FragCoord.xy
-#define T time
+#define T (time * 0.5)
 #define R resolution
-#define MN min(R.x,R.y)
-float rnd(vec2 p) {
-  p=fract(p*vec2(12.9898,78.233));
-  p+=dot(p,p+34.56);
-  return fract(p.x*p.y);
+#define MN min(R.x, R.y)
+
+float hash(vec2 p) {
+    p = fract(p * vec2(12.9898, 78.233));
+    p += dot(p, p + 34.56);
+    return fract(p.x * p.y);
 }
-float noise(in vec2 p) {
-  vec2 i=floor(p), f=fract(p), u=f*f*(3.-2.*f);
-  float a=rnd(i), b=rnd(i+vec2(1,0)), c=rnd(i+vec2(0,1)), d=rnd(i+1.);
-  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+
+float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+               mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
 }
+
 float fbm(vec2 p) {
-  float t=.0, a=1.; mat2 m=mat2(1.,-.5,.2,1.2);
-  for (int i=0; i<5; i++) {
-    t+=a*noise(p); p*=2.*m; a*=.5;
-  }
-  return t;
+    float f = 0.0;
+    float amp = 0.5;
+    mat2 m = mat2(1.6,  1.2, -1.2,  1.6);
+    // OPTIMIZATION: Reduced from 6 to 3 octaves to save GPU cycles
+    for(int i = 0; i < 3; i++){
+        f += amp * noise(p);
+        p *= m;
+        amp *= 0.5;
+    }
+    return f;
 }
-float clouds(vec2 p) {
-	float d=1., t=.0;
-	for (float i=.0; i<3.; i++) {
-		float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
-		t=mix(t,d,a); d=a; p*=2./(i+1.);
-	}
-	return t;
+
+float meteor(vec2 uv, vec2 p, float t, float speed) {
+    float x = p.x + t * speed;
+    x = fract((x + 3.0) / 6.0) * 6.0 - 3.0;
+    vec2 pos = vec2(x, p.y);
+    
+    vec2 d = uv - pos;
+    float core = exp(-length(vec2(d.x * 5.0, d.y * 40.0)) * 12.0);
+    float tail = 0.0;
+    if (d.x < 0.0) {
+        tail = exp(-length(vec2(d.x * 0.8, d.y * 60.0)) * 4.0) * exp(d.x * 2.5);
+    }
+    return core + tail * 0.6;
 }
+
 void main(void) {
-	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
-	vec3 col=vec3(0);
-	float bg=clouds(vec2(st.x+T*.5,-st.y));
-	uv*=1.-.3*(sin(T*.2)*.5+.5);
+    // Coordenadas base
+    vec2 baseUV = (FC - 0.5 * R) / R.y;
+    vec2 origUV = (FC - 0.5 * R) / MN;
     
-    // Tonos Fuego de MundoGraff
-    vec3 colorCrimson = vec3(0.620, 0.0, 0.169); // #9E002B
-    vec3 colorOrange = vec3(1.0, 0.353, 0.0);    // #FF5A00
+    // 1. Tormenta de Arena (Nubes)
+    vec2 cloudUV = baseUV * 1.5 + vec2(T * 0.15, T * 0.05);
+    float n1 = fbm(cloudUV);
+    float n2 = fbm(cloudUV * 2.0 - vec2(T * 0.2));
+    float storm = fbm(cloudUV + n1 + n2);
     
-	for (float i=1.; i<12.; i++) {
-		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
-		vec2 p=uv;
-		float d=length(p);
+    // Paleta MundoGraff adaptada a la tormenta
+    vec3 darkColor = vec3(0.05, 0.02, 0.0);
+    vec3 crimson = vec3(0.620, 0.0, 0.169); // #9E002B
+    vec3 orange = vec3(1.0, 0.353, 0.0);    // #FF5A00
+    vec3 yellow = vec3(1.0, 0.635, 0.0);    // #FFA200
+    
+    vec3 bg = mix(darkColor, crimson, storm * 0.8);
+    bg = mix(bg, orange, pow(storm, 2.0) * 0.9);
+    bg = mix(bg, yellow, pow(storm, 4.0) * 0.5);
+
+    // 2. Luces que Viajan (Meteors/Shooting Stars)
+    vec3 meteors = vec3(0.0);
+    // OPTIMIZATION: Reduced from 15 to 6 meteors to save GPU cycles
+    for(float i = 0.0; i < 6.0; i++) {
+        float h1 = hash(vec2(i, i * 1.1));
+        float h2 = hash(vec2(i * 2.2, i));
+        float h3 = hash(vec2(i * 3.3, i * 4.4));
         
-        // Oscilar entre Carmesí y Naranja aditivamente
+        float y = (h1 * 2.0 - 1.0) * 1.2;
+        float speed = 0.6 + h2 * 1.8;
+        float offset = h3 * 20.0;
+        
+        float m = meteor(baseUV, vec2(0.0, y), T + offset, speed);
+        
+        vec3 mColor = mix(vec3(1.0, 0.95, 0.8), orange, h1 * 0.7);
+        meteors += m * mColor * (0.6 + h2 * 0.8);
+    }
+
+    // 3. Estrellas originales que se enlazan (Dancing Lights)
+    // --- 3. Dancing Nodes & Links ---
+    float NUM_NODES = 6.0; // OPTIMIZATION: Reduced from 12 to 6
+    vec3 nodesCol = vec3(0.0);
+    origUV *= 1.0 - 0.3 * (sin(T * 0.2) * 0.5 + 0.5);
+    
+    for (float i = 1.0; i < NUM_NODES; i++) {
+        origUV += 0.1 * cos(i * vec2(0.1 + 0.01 * i, 0.8) + i * i + T * 0.5 + 0.1 * origUV.x);
+        vec2 p = origUV;
+        float d = length(p);
+        
         float mixFactor = (sin(i * 1.5 + T) * 0.5) + 0.5;
-        vec3 waveColor = mix(colorCrimson, colorOrange, mixFactor);
+        vec3 waveColor = mix(crimson, orange, mixFactor);
         
-		col+=.0025/d*waveColor;
-		float b=noise(i+p+bg*1.731);
-		col+=.003*b/length(max(p,vec2(b*p.x*.02,p.y)))*waveColor;
-	}
-    // Todo negro de fondo, luz puramente aditiva
-	O=vec4(col,1);
+        nodesCol += 0.0025 / d * waveColor;
+        float b = noise(i + p + storm * 1.731);
+        nodesCol += 0.003 * b / length(max(p, vec2(b * p.x * 0.02, p.y))) * waveColor;
+    }
+
+    // Combinar Todo (Nubes + Meteoros + Nodos enlazados)
+    vec3 col = bg + meteors + nodesCol;
+    
+    // Viñeta para oscurecer los bordes
+    float vignette = 1.0 - smoothstep(0.4, 1.8, length(baseUV));
+    col *= vignette;
+    
+    O = vec4(col, 1.0);
 }`;
 
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -371,7 +429,7 @@ const FinalCTA: React.FC = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 1], [40, 0]);
 
   return (
-    <section ref={containerRef} id="cta-final" className="relative w-full h-[100dvh] bg-black flex items-center justify-center overflow-hidden">
+    <section ref={containerRef} id="cta-final" className="relative w-full h-[100dvh] bg-white dark:bg-black flex items-center justify-center overflow-hidden snap-center">
       
       {/* Contenedor Animado que hace el efecto "Encaje de Video" */}
       <motion.div 
@@ -392,8 +450,12 @@ const FinalCTA: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
         
         {/* Hero Content Overlay */}
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-white px-6">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-[#0C1C47] dark:text-white px-6">
           
+          {/* Luz NEÓN Xenón (Exclusiva de Dark Mode a pedido del usuario) optimizada sin CSS blur */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] max-w-sm h-[80px] hidden dark:block bg-[radial-gradient(ellipse_at_center,_rgba(0,229,255,0.4)_0%,_transparent_70%)] pointer-events-none rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] max-w-3xl h-[200px] hidden dark:block bg-[radial-gradient(ellipse_at_center,_rgba(0,142,122,0.2)_0%,_transparent_70%)] pointer-events-none rounded-full" />
+
           {/* Trust Badge "Piola" */}
           <div className="mb-10">
               <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-black/40 backdrop-blur-md border border-[#FF5A00]/30 rounded-full text-sm shadow-[0_0_15px_rgba(255,90,0,0.15)] transition-all hover:border-[#FF5A00]/60 hover:shadow-[0_0_20px_rgba(255,90,0,0.25)]">
@@ -421,7 +483,7 @@ const FinalCTA: React.FC = () => {
             
             {/* Subtitle */}
             <div className="max-w-2xl mx-auto pt-4 pb-8">
-              <p className="text-lg md:text-xl text-neutral-400 font-sans leading-relaxed">
+              <p className="text-lg md:text-xl text-neutral-300 font-sans leading-relaxed">
                 Contactanos hoy mismo y transformemos tus ideas en cartelería e impresiones de alto impacto.
               </p>
             </div>

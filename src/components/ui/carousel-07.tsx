@@ -178,7 +178,7 @@ export default function CarouselStacked() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full py-10 bg-transparent overflow-hidden select-none">
+    <div className="flex flex-col items-center justify-center w-full py-10 bg-transparent select-none">
       <div className="relative w-full max-w-7xl h-80 sm:h-112 lg:h-128 flex items-center justify-center">
         {/* Transparent Drag Surface */}
         <motion.div
@@ -241,8 +241,8 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
   );
   const opacity = useTransform(
     offset,
-    [-total / 2, -total / 2 + 0.5, 0, total / 2 - 0.5, total / 2],
-    [0, 1, 1, 1, 0],
+    [-2.5, -2, 0, 2, 2.5],
+    [0, 1, 1, 1, 0]
   );
   const zIndex = useTransform(offset, (o) =>
     Math.round(100 - Math.abs(o) * 10),
@@ -257,7 +257,7 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
       case "orange":
         return "bg-[#FF5A00]/20 text-[#FFA200] border-[#FF5A00]/30 border";
       default:
-        return "bg-neutral-800 text-white border-neutral-700 border";
+        return "bg-neutral-800 text-[#0C1C47] dark:text-white border-neutral-700 border";
     }
   };
 
@@ -274,10 +274,9 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
       className={cn(
         "absolute rounded-2xl overflow-hidden group pointer-events-none",
         "w-56 h-72 sm:w-64 sm:h-80 lg:w-72 lg:h-96",
-        "bg-[#0A0A0A] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]" // REGLA 1: Gris ultra oscuro cristal
+        "bg-white dark:bg-[#0A0A0A] border border-black/5 dark:border-white/5 shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-colors duration-300" // Responsivo
       )}
     >
-      {/* REGLA 1: Imagen del logotipo */}
       <div className={cn(
         "absolute inset-0 flex items-center justify-center",
         slide.fullCover ? "" : "p-8 pb-28"
@@ -287,13 +286,13 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
           alt={slide.title}
           className={cn(
             "w-full h-full pointer-events-none transition-transform duration-700 group-hover:scale-105",
-            slide.fullCover ? "object-cover" : "object-contain"
+            slide.fullCover ? "object-cover" : "object-contain dark:brightness-0 dark:invert transition-all duration-300"
           )}
         />
       </div>
 
-      {/* Sutil sombra interna inferior para que el texto sea siempre legible */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#050505] via-[#0A0A0A]/80 to-transparent pointer-events-none" />
+      {/* Sutil sombra interna inferior responsiva */}
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/80 dark:from-[#050505] dark:via-[#0A0A0A]/80 to-transparent pointer-events-none transition-colors duration-300" />
 
       {/* REGLA 3: Badges personalizados de marca */}
       <div className="absolute top-4 right-4 sm:top-5 sm:right-5">
@@ -311,7 +310,7 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
           style={{
             opacity: useTransform(offset, [-0.5, 0, 0.5], [0, 1, 0]),
           }}
-          className="text-xl sm:text-2xl font-heading font-bold text-white mb-2 drop-shadow-md"
+          className="text-xl sm:text-2xl font-heading font-bold text-[#0C1C47] dark:text-white mb-2 drop-shadow-md transition-colors duration-300"
         >
           {slide.title}
         </motion.p>
@@ -319,7 +318,7 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
           style={{
             opacity: useTransform(offset, [-0.5, 0, 0.5], [0, 1, 0]),
           }}
-          className="hidden sm:block text-sm text-neutral-400 font-sans line-clamp-2"
+          className="hidden sm:block text-sm text-neutral-600 dark:text-neutral-400 font-sans line-clamp-2 transition-colors duration-300"
         >
           {slide.description}
         </motion.p>

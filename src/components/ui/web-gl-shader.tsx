@@ -51,53 +51,53 @@ export default function WebGLShader({ className = "absolute inset-0 w-full h-ful
         vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / max(resolution.x, resolution.y);
 
         vec3 teal        = vec3(0.000, 0.557, 0.478); // #008E7A
-        vec3 ultramarine = vec3(0.165, 0.294, 0.612); // #2A4B9C
+        vec3 brightBlue  = vec3(0.165, 0.294, 0.612); // #2A4B9C
         vec3 violet      = vec3(0.478, 0.133, 0.357); // #7A225B
         vec3 crimson     = vec3(0.620, 0.000, 0.169); // #9E002B
         vec3 orange      = vec3(1.000, 0.353, 0.000); // #FF5A00
-        vec3 amber       = vec3(1.000, 0.635, 0.000); // #FFA200 (Extra para variedad)
+        vec3 whatsappGreen = vec3(0.145, 0.827, 0.400); // #25D366
 
-        // VELOCIDAD MÁS RÁPIDA (Solicitado)
-        float t = time * 1.2;
+        // ANIMACIÓN MÁS FLUIDA Y VARIADA
+        float t = time * 0.8;
 
         vec3 finalColor = vec3(0.0);
 
         // === DISTRIBUCIÓN DE HACES ===
         // calculatePill(p, xPos, width, yFreq, speed, phase, pillLength, t)
         
-        // Extremo Izquierdo (Rellenando el 1er sexto: de -1.0 a -0.66)
-        finalColor += teal        * calculatePill(p, -0.98, 0.007, 1.7, 1.1, 0.4, 0.35, t);
-        finalColor += ultramarine * calculatePill(p, -0.92, 0.005, 2.2, 1.3, 0.9, 0.2, t);
-        finalColor += violet      * calculatePill(p, -0.85, 0.008, 1.4, 0.9, 0.1, 0.4, t);
-        finalColor += orange      * calculatePill(p, -0.78, 0.006, 1.9, 1.5, 0.6, 0.25, t) * 0.7;
+        // Extremo Izquierdo
+        finalColor += teal          * calculatePill(p, -0.98, 0.007, 1.7, 1.1, 0.4, 0.35, t);
+        finalColor += brightBlue    * calculatePill(p, -0.92, 0.005, 2.2, 1.3, 0.9, 0.2, t);
+        finalColor += violet        * calculatePill(p, -0.85, 0.008, 1.4, 0.9, 0.1, 0.4, t);
+        finalColor += orange        * calculatePill(p, -0.78, 0.006, 1.9, 1.5, 0.6, 0.25, t) * 0.7;
         
         // Izquierda Media
-        finalColor += ultramarine * calculatePill(p, -0.72, 0.006, 1.5, 0.8, 0.0, 0.3, t);
-        finalColor += teal        * calculatePill(p, -0.65, 0.005, 2.2, 1.4, 0.3, 0.2, t);
-        finalColor += teal        * calculatePill(p, -0.55, 0.008, 2.0, 1.2, 0.5, 0.4, t);
-        finalColor += violet      * calculatePill(p, -0.45, 0.004, 1.8, 0.9, 0.2, 0.2, t);
-        finalColor += crimson     * calculatePill(p, -0.28, 0.005, 2.5, 1.5, 0.8, 0.3, t) * 0.8;
+        finalColor += brightBlue    * calculatePill(p, -0.72, 0.006, 1.5, 0.8, 0.0, 0.3, t);
+        finalColor += teal          * calculatePill(p, -0.65, 0.005, 2.2, 1.4, 0.3, 0.2, t);
+        finalColor += whatsappGreen * calculatePill(p, -0.55, 0.008, 2.0, 1.2, 0.5, 0.4, t);
+        finalColor += violet        * calculatePill(p, -0.45, 0.004, 1.8, 0.9, 0.2, 0.2, t);
+        finalColor += crimson       * calculatePill(p, -0.28, 0.005, 2.5, 1.5, 0.8, 0.3, t) * 0.8;
         
-        // Centro (Protegido, densidad baja)
-        finalColor += teal        * calculatePill(p, -0.12, 0.007, 1.2, 0.7, 0.4, 0.3, t);
-        finalColor += violet      * calculatePill(p,  0.08, 0.004, 2.0, 1.1, 0.7, 0.2, t);
-        finalColor += ultramarine * calculatePill(p,  0.18, 0.005, 1.6, 1.1, 0.9, 0.25, t);
+        // Centro (Un poco más espaciado)
+        finalColor += teal          * calculatePill(p, -0.12, 0.007, 1.2, 0.7, 0.4, 0.3, t);
+        finalColor += whatsappGreen * calculatePill(p,  0.08, 0.004, 2.0, 1.1, 0.7, 0.2, t);
+        finalColor += brightBlue    * calculatePill(p,  0.18, 0.005, 1.6, 1.1, 0.9, 0.25, t);
         
-        // Derecha Media (DENSIDAD ALTA)
-        finalColor += violet      * calculatePill(p,  0.32, 0.009, 1.4, 1.0, 0.1, 0.35, t);
-        finalColor += teal        * calculatePill(p,  0.42, 0.005, 2.2, 1.6, 0.7, 0.2, t);
-        finalColor += orange      * calculatePill(p,  0.48, 0.007, 1.5, 1.2, 0.4, 0.25, t) * 0.7;
-        finalColor += orange      * calculatePill(p,  0.55, 0.006, 1.8, 1.3, 0.3, 0.4, t) * 0.8;
-        finalColor += ultramarine * calculatePill(p,  0.65, 0.008, 1.5, 0.9, 0.6, 0.3, t);
-        finalColor += amber       * calculatePill(p,  0.72, 0.004, 2.8, 1.8, 0.2, 0.15, t) * 0.7;
-        finalColor += teal        * calculatePill(p,  0.77, 0.006, 2.0, 1.3, 0.9, 0.3, t);
+        // Derecha Media
+        finalColor += violet        * calculatePill(p,  0.32, 0.009, 1.4, 1.0, 0.1, 0.35, t);
+        finalColor += teal          * calculatePill(p,  0.42, 0.005, 2.2, 1.6, 0.7, 0.2, t);
+        finalColor += orange        * calculatePill(p,  0.48, 0.007, 1.5, 1.2, 0.4, 0.25, t) * 0.7;
+        finalColor += orange        * calculatePill(p,  0.55, 0.006, 1.8, 1.3, 0.3, 0.4, t) * 0.8;
+        finalColor += brightBlue    * calculatePill(p,  0.65, 0.008, 1.5, 0.9, 0.6, 0.3, t);
+        finalColor += whatsappGreen * calculatePill(p,  0.72, 0.004, 2.8, 1.8, 0.2, 0.15, t) * 0.7;
+        finalColor += teal          * calculatePill(p,  0.77, 0.006, 2.0, 1.3, 0.9, 0.3, t);
         
-        // Extremo Derecho (Rellenando el último sexto)
-        finalColor += teal        * calculatePill(p,  0.82, 0.007, 1.7, 1.1, 0.8, 0.45, t);
-        finalColor += violet      * calculatePill(p,  0.86, 0.005, 2.0, 1.4, 0.5, 0.25, t);
-        finalColor += ultramarine * calculatePill(p,  0.91, 0.006, 1.3, 0.8, 0.9, 0.3, t);
-        finalColor += crimson     * calculatePill(p,  0.95, 0.005, 2.5, 1.5, 0.2, 0.2, t) * 0.8;
-        finalColor += crimson     * calculatePill(p,  0.98, 0.008, 1.9, 1.2, 0.1, 0.35, t) * 0.8;
+        // Extremo Derecho
+        finalColor += teal          * calculatePill(p,  0.82, 0.007, 1.7, 1.1, 0.8, 0.45, t);
+        finalColor += violet        * calculatePill(p,  0.86, 0.005, 2.0, 1.4, 0.5, 0.25, t);
+        finalColor += brightBlue    * calculatePill(p,  0.91, 0.006, 1.3, 0.8, 0.9, 0.3, t);
+        finalColor += crimson       * calculatePill(p,  0.95, 0.005, 2.5, 1.5, 0.2, 0.2, t) * 0.8;
+        finalColor += crimson       * calculatePill(p,  0.98, 0.008, 1.9, 1.2, 0.1, 0.35, t) * 0.8;
 
         // PROTECCIÓN DE TEXTURA CENTRAL (Atenúa el fondo tras el texto)
         float centerDist = length(vec2(p.x * 1.5, p.y * 0.6));

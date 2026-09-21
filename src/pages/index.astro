@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 // Importamos el componente interactivo de tubos 3D
 import TubesCursor from "../components/ui/tubes-cursor.tsx";
 // Importamos el nuevo carrusel 3D de servicios
@@ -42,27 +43,48 @@ import TunnelBackground from "../components/ui/TunnelBackground.tsx";
       type="image/png"
       href="/temaoscuro/isotipo-removebg-preview.png"
     />
+
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+    
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute("data-theme", "light");
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+      window.localStorage.setItem('theme', theme);
+    </script>
   </head>
-  <body class="bg-black font-sans text-neutral-400 scroll-smooth">
+  <body class="bg-mundo-fondo dark:bg-black font-sans text-neutral-800 dark:text-neutral-400 scroll-smooth">
     <!-- Navbar Píldora Flotante con Glassmorphism -->
-    <RandomLetterSwapNav client:visible />
+    <RandomLetterSwapNav client:load />
 
     <!-- Hero interactivo con Tubes Cursor -->
-    <section id="inicio" class="bg-black">
+    <section id="inicio" class="bg-mundo-fondo dark:bg-black">
       <TubesCursor client:only="react" />
     </section>
 
     <!-- Sección de Servicios (Lienzo Negro Infinito con Túnel 3D) -->
-    <section id="servicios" class="relative overflow-hidden py-12 bg-black">
+    <section id="servicios" class="relative overflow-hidden py-12 bg-mundo-fondo dark:bg-black">
       
       <!-- Fondo animado 3D de túnel infinito trasladado desde el Footer -->
       <TunnelBackground client:load />
       
       <!-- Degradado superior para fundir con la sección anterior -->
-      <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-mundo-fondo dark:from-black to-transparent z-10 pointer-events-none transition-colors duration-300"></div>
       
       <!-- Degradado inferior para fundir con la sección siguiente -->
-      <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-mundo-fondo dark:from-black to-transparent z-10 pointer-events-none transition-colors duration-300"></div>
 
       <div class="relative z-20 max-w-7xl mx-auto px-6 pointer-events-auto">
         <div class="text-center max-w-3xl mx-auto mb-2 reveal-on-scroll">
@@ -76,15 +98,18 @@ import TunnelBackground from "../components/ui/TunnelBackground.tsx";
           >
             Nuestros Servicios
           </h2>
-          <p class="text-neutral-400 text-lg md:text-xl">
+          <p class="text-neutral-600 dark:text-neutral-400 text-lg md:text-xl transition-colors duration-300">
             Combinamos el oficio de toda la vida con tecnología moderna para
             darte soluciones rápidas, resistentes y con el color que necesitás.
           </p>
         </div>
 
         <!-- Renderizado del Coverflow 3D -->
-        <div class="reveal-on-scroll">
-          <ServiciosCarousel client:visible />
+        <div class="relative reveal-on-scroll min-h-[500px] flex items-center justify-center">
+          <!-- Luz cálida (naranja) centrada ESTRICTAMENTE detrás de las tarjetas de Servicios (Exclusiva de Light Mode) -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[400px] bg-[radial-gradient(ellipse_at_center,_rgba(255,90,0,0.25)_0%,_transparent_70%)] dark:opacity-0 pointer-events-none transition-opacity duration-300"></div>
+          
+          <ServiciosCarousel client:only="react" />
         </div>
         
         <!-- REGLA 2 y 3: Botón brillante enlazando a WhatsApp con el SVG alineado -->
@@ -101,36 +126,45 @@ import TunnelBackground from "../components/ui/TunnelBackground.tsx";
     </section>
 
     <!-- Sección de Trayectoria (Herencia y Jerarquía) -->
-    <section id="trayectoria" class="relative bg-black py-32 overflow-hidden flex flex-col items-center justify-center text-center">
+    <section id="trayectoria" class="relative bg-[#081028] dark:bg-black min-h-[100dvh] overflow-hidden flex flex-col items-center justify-center text-center">
       
-      <!-- Fondo animado WebGL (Lluvia Digital / Rieles con difuminado en bordes) -->
+      <!-- Fondo animado WebGL (Lluvia Digital / Rieles multicolor) -->
       <WebGLShader 
         client:only="react" 
         className="absolute inset-0 w-full h-full pointer-events-none opacity-90 mix-blend-screen"
-        style={{ WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)", maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)" }}
+        style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 95%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 95%, transparent 100%)" }}
       />
 
       <!-- Contenido de la Sección -->
-      <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center reveal-on-scroll">
+      <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center reveal-on-scroll my-16">
         
-        <!-- REGLA 3: SOBRETÍTULO -->
-        <div class="flex items-center gap-3 mb-10">
-          <span class="w-2 h-2 rounded-full bg-[#008E7A] shadow-[0_0_8px_#008E7A] animate-pulse"></span>
-          <span class="text-[10px] tracking-[0.3em] uppercase text-neutral-400 font-bold">
+        <!-- SOBRETÍTULO -->
+        <div class="flex items-center gap-3 mb-8 md:mb-10">
+          <span class="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_12px_#25D366] animate-pulse"></span>
+          <span class="text-xs tracking-[0.3em] uppercase text-white/80 font-bold">
             Nuestra Trayectoria
           </span>
         </div>
 
-        <!-- REGLA 4: TÍTULO GIGANTE -->
-        <h2 class="font-heading text-4xl md:text-5xl font-extrabold text-white leading-[1.1] md:leading-[1.1] lg:leading-[1.1] max-w-4xl mx-auto drop-shadow-2xl">
-          Tradición y evolución: <span class="text-[#008E7A]">Tres generaciones</span> transformando el oficio gráfico en soluciones de alto impacto.
+        <!-- TÍTULO GIGANTE -->
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] max-w-4xl mx-auto tracking-tight">
+          Tradición y evolución:<br class="hidden sm:block" />
+          <span class="text-[#25D366] drop-shadow-[0_0_25px_rgba(37,211,102,0.4)]">Tres generaciones</span><br class="hidden sm:block" />
+          transformando el oficio gráfico en soluciones de alto impacto.
         </h2>
 
-        <!-- REGLA 5: PÁRRAFO BIOGRÁFICO -->
-        <p class="mt-12 max-w-3xl mx-auto font-sans text-neutral-400 text-lg md:text-xl leading-relaxed text-center">
-          En 1994, Juan Carlos Reveco fundó nuestra primera imprenta en Maipú, construida a puro pulmón junto a entrañables familiares y amigos. En ese taller aprendimos el oficio desde abajo hasta tomar las riendas de la siguiente generación. Con ese mismo empuje, en 2020 dimos el gran salto a nuestra actual planta en la zona industrial. Hoy seguimos apostando por tecnología de punta, manteniendo intacta la dedicación y calidad que nos vio nacer.
+        <!-- PÁRRAFO BIOGRÁFICO -->
+        <p class="mt-8 md:mt-12 max-w-3xl mx-auto font-sans text-white/70 text-base md:text-lg lg:text-xl leading-relaxed text-center">
+          En 1994, Juan Carlos Reveco fundó nuestra primera imprenta en Maipú, construida a puro pulmón junto a entrañables familiares y amigos. En ese taller aprendimos el oficio desde abajo hasta tomar las riendas de la siguiente generación.
+        </p>
+        
+        <p class="mt-4 md:mt-6 max-w-3xl mx-auto font-sans text-white/70 text-base md:text-lg lg:text-xl leading-relaxed text-center">
+          Con ese mismo empuje, en 2020 dimos el gran salto a nuestra actual planta en la zona industrial. Hoy seguimos apostando por tecnología de punta, manteniendo intacta la dedicación y calidad que nos vio nacer.
         </p>
       </div>
+
+      <!-- Degradado inferior para fundir con la sección siguiente (Ubicación) -->
+      <div class="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white dark:from-black to-transparent z-20 pointer-events-none transition-colors duration-300"></div>
     </section>
 
     <!-- Sección de Ubicación con Mapa Interactivo -->
@@ -140,7 +174,7 @@ import TunnelBackground from "../components/ui/TunnelBackground.tsx";
     <ClientesSection client:visible />
 
     <!-- Sección de CTA Final con WebGL -->
-    <FinalCTA client:only="react" />
+    <FinalCTA client:visible />
 
     <!-- Footer Animado 3D -->
     <AnimatedFooter client:visible />
@@ -172,6 +206,10 @@ import TunnelBackground from "../components/ui/TunnelBackground.tsx";
       });
     </script>
     <style is:global>
+      html {
+        scroll-behavior: smooth;
+        scroll-snap-type: y proximity;
+      }
       .reveal-on-scroll {
         opacity: 0;
         transform: translateY(40px);

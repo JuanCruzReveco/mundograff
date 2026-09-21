@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React, { useRef, useState, useEffect } from "react"
 
 interface ShinyButtonProps {
   children: React.ReactNode
@@ -11,7 +11,23 @@ interface ShinyButtonProps {
 }
 
 export function ShinyButton({ children, onClick, className = "", href, style }: ShinyButtonProps) {
-  const content = <span>{children}</span>
+  const buttonRef = useRef<HTMLAnchorElement & HTMLButtonElement>(null)
+  
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!buttonRef.current) return
+    const rect = buttonRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    buttonRef.current.style.setProperty("--x", `${x}px`)
+    buttonRef.current.style.setProperty("--y", `${y}px`)
+  }
+
+  const content = (
+    <>
+      <div className="shiny-cta-spotlight" />
+      <span>{children}</span>
+    </>
+  )
 
   return (
     <>
@@ -44,12 +60,13 @@ export function ShinyButton({ children, onClick, className = "", href, style }: 
         }
 
         .shiny-cta {
-          --shiny-cta-bg: #000000;
-          --shiny-cta-bg-subtle: #1a1818;
-          --shiny-cta-fg: #ffffff;
+          /* Fondo blanco original, ganando contraste a través de los contornos */
+          --shiny-cta-bg: #ffffff;
+          --shiny-cta-bg-subtle: #000000; /* Borde interno negro duro para máximo contraste */
+          --shiny-cta-fg: #000000;
           /* REGLA 1: Tonos verdes característicos de WhatsApp */
-          --shiny-cta-highlight: #25D366;
-          --shiny-cta-highlight-subtle: #128C7E;
+          --shiny-cta-highlight: #128C7E; /* Verde más oscuro/fuerte para el modo claro */
+          --shiny-cta-highlight-subtle: #25D366;
           --animation: gradient-angle linear infinite;
           --duration: 3s;
           --shadow-size: 2px;
@@ -64,8 +81,8 @@ export function ShinyButton({ children, onClick, className = "", href, style }: 
           font-family: "Inter", sans-serif;
           font-size: 1.125rem;
           line-height: 1.2;
-          font-weight: 500;
-          border: 1px solid transparent;
+          font-weight: 700;
+          border: 4px solid transparent; /* Contorno animado mucho más grueso */
           border-radius: 360px;
           color: var(--shiny-cta-fg);
           background: linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
@@ -77,7 +94,8 @@ export function ShinyButton({ children, onClick, className = "", href, style }: 
               var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
               transparent calc(var(--gradient-percent) * 4)
             ) border-box;
-          box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+          /* Sombra interna negra muy marcada, más la sombra verde exterior */
+          box-shadow: inset 0 0 0 2px var(--shiny-cta-bg-subtle), 0 12px 40px rgba(37, 211, 102, 0.4);
           transition: var(--transition);
           transition-property: --gradient-angle-offset, --gradient-percent, --gradient-shine;
           
@@ -86,6 +104,42 @@ export function ShinyButton({ children, onClick, className = "", href, style }: 
           align-items: center;
           justify-content: center;
           text-decoration: none;
+        }
+
+        .dark .shiny-cta {
+          --shiny-cta-bg: #000000;
+          --shiny-cta-bg-subtle: #1a1818;
+          --shiny-cta-fg: #ffffff;
+          font-weight: 500;
+          border-width: 1px;
+          box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+        }
+
+        /* Cursor tracking spotlight */
+        .shiny-cta-spotlight {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: radial-gradient(
+            120px circle at var(--x, 50%) var(--y, 50%),
+            rgba(37, 211, 102, 0.4),
+            transparent 100%
+          );
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          z-index: 0;
+        }
+        
+        .dark .shiny-cta-spotlight {
+          background: radial-gradient(
+            120px circle at var(--x, 50%) var(--y, 50%),
+            rgba(37, 211, 102, 0.6),
+            transparent 100%
+          );
+        }
+
+        .shiny-cta:hover .shiny-cta-spotlight {
+          opacity: 1;
         }
 
         .shiny-cta::before,
@@ -210,11 +264,11 @@ export function ShinyButton({ children, onClick, className = "", href, style }: 
 
       {/* REGLA 2: Implementación de Enlace (<a>) si hay href */}
       {href ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={`shiny-cta ${className}`} onClick={onClick} style={style}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={`shiny-cta ${className}`} onClick={onClick} style={style} ref={buttonRef as any} onMouseMove={handleMouseMove}>
           {content}
         </a>
       ) : (
-        <button className={`shiny-cta ${className}`} onClick={onClick} style={style}>
+        <button className={`shiny-cta ${className}`} onClick={onClick} style={style} ref={buttonRef as any} onMouseMove={handleMouseMove}>
           {content}
         </button>
       )}

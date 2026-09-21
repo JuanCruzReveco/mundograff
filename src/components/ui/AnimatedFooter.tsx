@@ -51,21 +51,24 @@ export default function AnimatedFooter() {
   return (
     <footer
       ref={containerRef}
-      className="relative overflow-hidden min-h-[50vh] flex flex-col justify-between cursor-default bg-black"
+      className="dark relative overflow-hidden min-h-[50vh] flex flex-col justify-between cursor-default bg-black"
     >
-      {/* ═══════ CONTENIDO CORPORATIVO (REDISEÑO) ═══════ */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-10 pointer-events-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+      {/* ✨✨✨ CONTENIDO CORPORATIVO (REDISEÑO) ✨✨✨ */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pt-16 pb-8 h-full flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
           
-          {/* Columna Izquierda: Marca y CTA (Ocupa 4 espacios) */}
-          <div className="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-8">
-            <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="block">
-              <img 
-                src="/temaoscuro/logo_horizontal-removebg-preview.png" 
-                alt="MundoGraff" 
-                className="h-10 w-auto mb-6 object-contain hover:opacity-90 transition-opacity" 
-              />
-            </a>
+          {/* Columna Izquierda: Logo y Tagline (Ocupa 4 espacios) */}
+          <div className="lg:col-span-4 flex flex-col">
+            <div className="flex flex-col items-start justify-center h-full">
+              <a href="/#inicio" onClick={(e) => handleNavClick(e, '/#inicio')} className="inline-block" aria-label="Ir al inicio">
+                {/* Logo Tema Oscuro (Único para ambos temas por pedido) */}
+                <img 
+                  src="/temaoscuro/logo_horizontal-removebg-preview.png" 
+                  alt="MundoGraff" 
+                  className="w-48 mb-6 object-contain block transition-all duration-300"
+                />
+              </a>
+            </div>
             <p className="text-neutral-400 font-sans text-sm max-w-sm mb-8 leading-relaxed">
               Producción gráfica integral. El respaldo de oficio que tu marca necesita.
             </p>
@@ -85,7 +88,7 @@ export default function AnimatedFooter() {
           {/* Columnas Derechas: Enlaces (Ocupa 8 espacios) */}
           <div className="lg:col-span-8 flex flex-col md:flex-row justify-between gap-12 md:gap-8">
             
-            {/* Columna 1: NAVEGACIÓN */}
+            {/* Columna 1: NAVEGACIÃ“N */}
             <div>
               <h3 className="text-xs font-heading tracking-widest text-neutral-500 uppercase mb-6">
                 Navegación
@@ -191,7 +194,7 @@ export default function AnimatedFooter() {
         {/* Cierre: Copyright */}
         <div className="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row items-center justify-center gap-4">
           <p className="text-xs text-neutral-500 font-sans text-center">
-            © 2026 MundoGraff. Todos los derechos reservados.
+            &copy; 2026 MundoGraff. Todos los derechos reservados.
           </p>
         </div>
       </div>

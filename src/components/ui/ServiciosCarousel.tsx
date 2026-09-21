@@ -239,7 +239,7 @@ export function CoverflowCarousel({
               nudge(1);
             }
           }}
-          className="cursor-grab overflow-hidden py-10 outline-none ring-0 focus-visible:ring-0 active:cursor-grabbing"
+          className="cursor-grab overflow-visible py-10 outline-none ring-0 focus-visible:ring-0 active:cursor-grabbing"
           style={{
             perspective: `calc(var(--cf-card) * ${perspective})`,
             touchAction: "pan-y",
@@ -262,7 +262,7 @@ export function CoverflowCarousel({
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}`}
                 className={cn(
-                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-black shadow-[0_0_50px_rgba(0,0,0,1)] will-change-transform border-0",
+                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-white dark:bg-[#1a1c23] shadow-[0_0_50px_rgba(0,0,0,1)] will-change-transform border-0",
                   cardClassName,
                 )}
                 style={{ width: "var(--cf-card)" }}
@@ -286,7 +286,7 @@ export function CoverflowCarousel({
               aria-label="Previous slide"
               onClick={() => nudge(-1)}
               // REGLA 1: Botones oscuros, iconos blancos, hover Naranja Fuego
-              className="absolute left-4 md:left-12 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-black/50 p-3 text-white backdrop-blur transition-all duration-300 hover:bg-[#FF5A00] hover:scale-110"
+              className="absolute left-4 md:left-12 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-white dark:bg-black/50 p-3 text-[#0C1C47] dark:text-white backdrop-blur transition-all duration-300 hover:bg-[#FF5A00] hover:scale-110"
             >
               <ChevronLeft className="size-6" />
             </button>
@@ -295,7 +295,7 @@ export function CoverflowCarousel({
               aria-label="Next slide"
               onClick={() => nudge(1)}
               // REGLA 1: Botones oscuros, iconos blancos, hover Naranja Fuego
-              className="absolute right-4 md:right-12 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-black/50 p-3 text-white backdrop-blur transition-all duration-300 hover:bg-[#FF5A00] hover:scale-110"
+              className="absolute right-4 md:right-12 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-white dark:bg-black/50 p-3 text-[#0C1C47] dark:text-white backdrop-blur transition-all duration-300 hover:bg-[#FF5A00] hover:scale-110"
             >
               <ChevronRight className="size-6" />
             </button>
@@ -309,7 +309,7 @@ export function CoverflowCarousel({
           className="mt-6 flex flex-col items-center px-6 duration-300 animate-in fade-in zoom-in-95 text-center"
         >
           {/* REGLA 2: Título blanco brillante, font-heading, 2xl extrabold */}
-          <p className="text-2xl md:text-3xl font-heading font-extrabold tracking-tight text-white drop-shadow-md">
+          <p className="text-2xl md:text-3xl font-heading font-extrabold tracking-tight text-[#0C1C47] dark:text-white drop-shadow-md">
             {active.title}
           </p>
           {active.subtitle && (
@@ -323,8 +323,8 @@ export function CoverflowCarousel({
               {active.meta.map((row) => (
                 <div key={row.label} className="flex justify-between py-2 border-b border-neutral-900 last:border-0">
                   {/* REGLA 3: dt Gris Mate, dd Blanco */}
-                  <dt className="text-neutral-400 font-sans tracking-wide">{row.label}</dt>
-                  <dd className="font-medium text-white font-sans">{row.value}</dd>
+                  <dt className="text-neutral-600 dark:text-neutral-400 font-sans tracking-wide">{row.label}</dt>
+                  <dd className="font-medium text-[#0C1C47] dark:text-white font-sans">{row.value}</dd>
                 </div>
               ))}
             </dl>
@@ -344,7 +344,7 @@ export function CoverflowCarousel({
               // REGLA 1: Puntos de paginación Naranja Fuego al estar activos
               className={cn(
                 "h-2.5 rounded-full transition-all duration-300",
-                index === selected ? "bg-[#FF5A00] w-8 shadow-[0_0_10px_rgba(255,90,0,0.5)]" : "bg-white/20 w-2.5 hover:bg-white/40",
+                index === selected ? "bg-[#FF5A00] w-8 shadow-[0_0_10px_rgba(255,90,0,0.5)]" : "bg-black/20 dark:bg-white/20 w-2.5 hover:bg-black/40 dark:hover:bg-white/40",
               )}
             />
           ))}
@@ -443,15 +443,20 @@ const SERVICIOS_SLIDES = [
 ];
 
 export default function ServiciosCarousel() {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+
   return (
-    <div className="w-full overflow-hidden bg-transparent py-4 flex flex-col items-center justify-center">
-      <div className="w-full max-w-6xl mx-auto">
-        <CoverflowCarousel 
-          slides={SERVICIOS_SLIDES} 
-          showCaption={true} 
-          showNavigation={true}
-          showPagination={true}
-        />
+    <div className="w-full bg-transparent py-4 flex flex-col items-center justify-center">
+      <div className="w-full max-w-7xl mx-auto min-h-[500px] flex items-center justify-center">
+        {mounted && (
+          <CoverflowCarousel 
+            slides={SERVICIOS_SLIDES} 
+            showCaption={true} 
+            showNavigation={true}
+            showPagination={true}
+          />
+        )}
       </div>
     </div>
   );

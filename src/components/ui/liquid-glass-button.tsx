@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
@@ -16,7 +16,7 @@ const liquidbuttonVariants = cva(
       variant: {
         default: "bg-transparent hover:scale-105 duration-300 transition text-primary",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90",
+          "bg-destructive text-[#0C1C47] dark:text-white hover:bg-destructive/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:

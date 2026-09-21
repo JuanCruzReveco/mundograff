@@ -1,1 +1,35 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-base: #000000;
+    --color-bg-surface: #111111;
+    --color-text-main: #FFFFFF;
+    --color-text-muted: #9CA3AF; /* neutral-400 equivalent */
+    --color-border: rgba(255, 255, 255, 0.1);
+  }
+
+  :root[data-theme="light"] {
+    --color-bg-base: #FFFFFF;
+    --color-bg-surface: #F3F4F6; /* light gray for surface */
+    --color-text-main: #0C1C47; /* azul marino oscuro */
+    --color-text-muted: #4B5563; /* darker gray for text */
+    --color-border: rgba(0, 0, 0, 0.1);
+  }
+
+  body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-muted);
+  }
+
+  body, section, nav, footer, article, aside, main, header {
+    transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out, border-color 0.4s ease-in-out;
+  }
+  
+  /* Utilidad para forzar la transición en elementos interactivos si es necesario */
+  .theme-transition {
+    transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out, border-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  }
+}
